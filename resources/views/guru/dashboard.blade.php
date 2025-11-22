@@ -506,6 +506,7 @@
                                     <th class="px-6 py-3 text-left font-semibold text-gray-700" scope="col">NISN</th>
                                     <th class="px-6 py-3 text-center font-semibold text-gray-700" scope="col">Status Penilaian</th>
                                     <th class="px-6 py-3 text-right font-semibold text-gray-700" scope="col">Aksi</th>
+                                    <th class="px-6 py-3 text-center font-semibold text-gray-700" scope="col"><span class="sr-only">Ekspansi detail</span></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200" id="students-table-body">
@@ -513,7 +514,7 @@
                                     @php
                                         $penilaian = $penilaians->get($siswa->id);
                                     @endphp
-                                    <tr class="hover:bg-gray-50 transition student-row" data-name="{{ strtolower($siswa->nama_lengkap) }}" data-nisn="{{ strtolower($siswa->nisn ?? '') }}">
+                                    <tr class="hover:bg-gray-50 transition student-row" data-name="{{ strtolower($siswa->nama_lengkap) }}" data-nisn="{{ strtolower($siswa->nisn ?? '') }}" data-student-id="{{ $siswa->id }}">
                                         <td class="px-6 py-4">
                                             @if ($penilaian)
                                                 <input type="checkbox" name="penilaian_ids[]" value="{{ $penilaian->id }}" class="row-checkbox rounded">
@@ -539,6 +540,54 @@
                                                         Buat Rapor
                                                     </a>
                                                 @endif
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <button 
+                                                type="button"
+                                                class="expand-toggle p-2 hover:bg-gray-200 rounded transition"
+                                                title="Perluas untuk melihat detail siswa"
+                                                aria-label="Perluas detail untuk {{ $siswa->nama_lengkap }}"
+                                                aria-expanded="false"
+                                                data-student-id="{{ $siswa->id }}"
+                                            >
+                                                <svg class="w-4 h-4 transition-transform expand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- Expandable Detail Row -->
+                                    <tr class="student-detail-row hidden" data-student-id="{{ $siswa->id }}">
+                                        <td colspan="6" class="px-6 py-4 bg-gray-50">
+                                            <div class="detail-content space-y-4 max-h-0 overflow-hidden transition-all duration-300">
+                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Informasi Pribadi</p>
+                                                        <div class="space-y-2 text-sm">
+                                                            <p><strong>Nama:</strong> {{ $siswa->nama_lengkap }}</p>
+                                                            <p><strong>NISN:</strong> {{ $siswa->nisn ?? 'Tidak ada' }}</p>
+                                                            <p><strong>Email:</strong> {{ $siswa->user->email ?? 'Tidak ada' }}</p>
+                                                        </div>
+                                                    </div>
+                                                    @if($penilaian)
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Data Penilaian</p>
+                                                        <div class="space-y-2 text-sm">
+                                                            <p><strong>Terakhir Diubah:</strong> {{ $penilaian->updated_at->format('d M Y H:i') }}</p>
+                                                            <p><strong>Status:</strong> <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded">Dinilai</span></p>
+                                                        </div>
+                                                    </div>
+                                                    @else
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Status Penilaian</p>
+                                                        <div class="space-y-2 text-sm">
+                                                            <p class="text-yellow-700"><strong>⚠️ Belum ada penilaian untuk siswa ini</strong></p>
+                                                            <p>Silakan buat rapor untuk melanjutkan</p>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -718,6 +767,61 @@
                     const downloadSpinner = downloadBtn.querySelector('.download-spinner');
                     setupLoadingState(downloadBtn, downloadText, downloadIcon, downloadSpinner);
                 }
+
+                // Expandable student details functionality
+                const expandButtons = document.querySelectorAll('.expand-toggle');
+                expandButtons.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        const studentId = this.getAttribute('data-student-id');
+                        const detailRow = document.querySelector(`.student-detail-row[data-student-id="${studentId}"]`);
+                        const icon = this.querySelector('.expand-icon');
+                        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+                        // Toggle detail row visibility
+                        if (isExpanded) {
+                            // Collapse
+                            detailRow.classList.add('hidden');
+                            const content = detailRow.querySelector('.detail-content');
+                            content.style.maxHeight = '0';
+                            this.setAttribute('aria-expanded', 'false');
+                            icon.style.transform = 'rotate(0deg)';
+                        } else {
+                            // Expand
+                            detailRow.classList.remove('hidden');
+                            const content = detailRow.querySelector('.detail-content');
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                            this.setAttribute('aria-expanded', 'true');
+                            icon.style.transform = 'rotate(180deg)';
+                        }
+                    });
+                });
+
+                // Update detail row visibility when filtering
+                function updateDetailRows() {
+                    const allDetailRows = document.querySelectorAll('.student-detail-row');
+                    allDetailRows.forEach(function(row) {
+                        const studentId = row.getAttribute('data-student-id');
+                        const studentRow = document.querySelector(`.student-row[data-student-id="${studentId}"]`);
+                        if (studentRow && studentRow.style.display === 'none') {
+                            row.style.display = 'none';
+                        } else if (studentRow) {
+                            // Keep detail row visibility based on expanded state
+                            const button = studentRow.querySelector('.expand-toggle');
+                            if (button && button.getAttribute('aria-expanded') === 'true') {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        }
+                    });
+                }
+
+                // Hook into existing filter function
+                const originalFilterStudents = filterStudents;
+                window.filterStudents = function() {
+                    originalFilterStudents();
+                    updateDetailRows();
+                };
             </script>
 
         </div>
