@@ -22,28 +22,40 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-1 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:bg-indigo-700">
-                        🏠 {{ __('Dashboard') }}
+                        <svg class="w-4 h-4 inline-block mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                        </svg>
+                        {{ __('Dashboard') }}
                     </x-nav-link>
 
                     @if(auth()->user()->role == 'admin_provinsi')
                         <x-nav-link :href="route('admin.provinsi.users.index')" :active="request()->routeIs('admin.provinsi.users.index')" class="text-white hover:bg-indigo-700">
-                            👥 {{ __('Manajemen Pengguna') }}
+                            <svg class="w-4 h-4 inline-block mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                            </svg>
+                            {{ __('Manajemen Pengguna') }}
                         </x-nav-link>
                         <x-nav-link :href="route('admin-website.index')" :active="request()->routeIs('admin-website.*')" class="text-white hover:bg-indigo-700">
-                            🌐 {{ __('Admin Website') }}
+                            <svg class="w-4 h-4 inline-block mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd" />
+                            </svg>
+                            {{ __('Admin Website') }}
                         </x-nav-link>
                     @endif
 
                     {{-- Guru Links --}}
                     @if(auth()->user()->role == 'guru')
                         <x-nav-link :href="route('guru.siswa.index')" :active="request()->routeIs('guru.siswa.*')" class="text-white hover:bg-indigo-700">
-                            👨‍🎓 {{ __('Kelola Siswa') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('guru.rapor.index')" :active="request()->routeIs('guru.rapor.index')" class="text-white hover:bg-indigo-700">
-                            📊 {{ __('Semua Rapor') }}
+                            <svg class="w-4 h-4 inline-block mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                            </svg>
+                            {{ __('Kelola Siswa') }}
                         </x-nav-link>
                         <x-nav-link :href="route('guru.sekolah.edit')" :active="request()->routeIs('guru.sekolah.edit')" class="text-white hover:bg-indigo-700">
-                            🏫 {{ __('Profil Sekolah') }}
+                            <svg class="w-4 h-4 inline-block mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd" />
+                            </svg>
+                            {{ __('Profil Sekolah') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -104,31 +116,40 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-indigo-700">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                🏠 {{ __('Dashboard') }}
+                <svg class="w-4 h-4 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
             @if(auth()->user()->role == 'admin_provinsi')
                 <x-responsive-nav-link :href="route('admin.provinsi.users.index')" :active="request()->routeIs('admin.provinsi.users.index')">
-                    👥 {{ __('Manajemen Pengguna') }}
+                    <svg class="w-4 h-4 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                    </svg>
+                    {{ __('Manajemen Pengguna') }}
                 </x-responsive-nav-link>
-            @endif
-
-            @if(auth()->user()->role == 'admin_provinsi')
                 <x-responsive-nav-link :href="route('admin-website.index')" :active="request()->routeIs('admin-website.*')">
-                    🌐 {{ __('Admin Website') }}
+                    <svg class="w-4 h-4 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd" />
+                    </svg>
+                    {{ __('Admin Website') }}
                 </x-responsive-nav-link>
             @endif
 
             {{-- Guru Links (Responsive) --}}
             @if(auth()->user()->role == 'guru')
                 <x-responsive-nav-link :href="route('guru.siswa.index')" :active="request()->routeIs('guru.siswa.*')">
-                    👨‍🎓 {{ __('Kelola Siswa') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('guru.rapor.index')" :active="request()->routeIs('guru.rapor.index')">
-                    📊 {{ __('Semua Rapor') }}
+                    <svg class="w-4 h-4 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                    </svg>
+                    {{ __('Kelola Siswa') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('guru.sekolah.edit')" :active="request()->routeIs('guru.sekolah.edit')">
-                    🏫 {{ __('Profil Sekolah') }}
+                    <svg class="w-4 h-4 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd" />
+                    </svg>
+                    {{ __('Profil Sekolah') }}
                 </x-responsive-nav-link>
             @endif
         </div>
