@@ -40,16 +40,16 @@ class HeartbeatController extends Controller
 
             // Get current session config
             $sessionLifetime = config('session.lifetime', 720);
-            
+
             // Regenerate CSRF token for enhanced security
             $request->session()->regenerateToken();
-            
+
             // Get new CSRF token
             $newCsrfToken = csrf_token();
-            
+
             // Log heartbeat (optional - useful for debugging)
             // \Log::debug("Heartbeat from user {$request->user()->id}");
-            
+
             // Return success response with new token
             return response()->json([
                 'status' => 'ok',
@@ -64,7 +64,7 @@ class HeartbeatController extends Controller
         } catch (\Exception $e) {
             // Log error
             \Log::error('Heartbeat error: ' . $e->getMessage());
-            
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Heartbeat failed',

@@ -135,24 +135,30 @@
                     <div class="flex flex-col gap-2 sm:gap-3">
                         @if($jumlahBelumDinilai > 0)
                             <a href="{{ route('guru.rapor.index') }}" 
+                               title="Mulai menginputkan nilai rapor untuk siswa ({{ $jumlahBelumDinilai }} siswa belum dinilai)"
+                               aria-label="Input Rapor - Mulai menginputkan nilai rapor"
                                class="w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-white text-indigo-600 rounded-lg font-semibold hover:bg-opacity-90 transition text-center flex items-center justify-center gap-2 text-sm sm:text-base min-h-[44px] sm:min-h-auto">
-                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
                                 <span class="truncate">Input Rapor ({{ $jumlahBelumDinilai }})</span>
                             </a>
                         @endif
                         <a href="{{ route('guru.siswa.index') }}" 
+                           title="Lihat dan kelola daftar semua siswa di kelas ini"
+                           aria-label="Kelola Siswa - Lihat dan kelola daftar siswa"
                            class="w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-white bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition text-center flex items-center justify-center gap-2 border border-white text-sm sm:text-base min-h-[44px] sm:min-h-auto">
-                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                 <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 11a6 6 0 00-5.86 0m.001-.02a.768.768 0 00-.140.54V14a6 6 0 006 6 6 6 0 006-6v-2.46a.768.768 0 00-.14-.54 6 6 0 00-5.86 0z" />
                             </svg>
                             <span class="hidden sm:inline">Kelola Siswa</span>
                             <span class="sm:hidden">Kelola</span>
                         </a>
                         <a href="{{ route('guru.siswa.create') }}" 
+                           title="Tambahkan siswa baru ke dalam kelas Anda"
+                           aria-label="Tambah Siswa - Tambahkan siswa baru"
                            class="w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-white bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition text-center flex items-center justify-center gap-2 border border-white text-sm sm:text-base min-h-[44px] sm:min-h-auto">
-                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                             <span class="hidden sm:inline">Tambah Siswa</span>
@@ -253,11 +259,15 @@
 
             <!-- Period Filter Section - MAKE IT OBVIOUS -->
             <div class="mb-6 bg-white rounded-lg shadow-md p-3 sm:p-4 border-l-4 border-blue-500 animate-slide-down">
-                <form method="GET" class="flex flex-col gap-3 sm:gap-4">
+                <form method="GET" class="flex flex-col gap-3 sm:gap-4" aria-label="Filter periode penilaian">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Tahun Ajaran</label>
-                            <select name="tahun_ajaran" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px]">
+                            <label for="tahun-select" class="block text-xs font-semibold text-gray-600 mb-1">Tahun Ajaran</label>
+                            <select id="tahun-select" name="tahun_ajaran" 
+                                    title="Pilih tahun ajaran untuk memfilter data"
+                                    aria-label="Pilih tahun ajaran"
+                                    aria-describedby="tahun-help"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px]">
                                 <option value="">-- Pilih Tahun --</option>
                                 @foreach($availableTahunAjaran as $tahun)
                                     <option value="{{ $tahun }}" {{ $tahun === $currentTahunAjaran ? 'selected' : '' }}>
@@ -265,25 +275,34 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <small id="tahun-help" class="text-gray-500 text-xs mt-1 hidden">Pilih tahun ajaran untuk menampilkan data yang sesuai</small>
                         </div>
                         
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Semester</label>
-                            <select name="semester" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px]">
+                            <label for="semester-select" class="block text-xs font-semibold text-gray-600 mb-1">Semester</label>
+                            <select id="semester-select" name="semester" 
+                                    title="Pilih semester (Ganjil atau Genap)"
+                                    aria-label="Pilih semester"
+                                    aria-describedby="semester-help"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px]">
                                 <option value="">-- Pilih Semester --</option>
                                 <option value="Ganjil" {{ 'Ganjil' === $currentSemester ? 'selected' : '' }}>Ganjil</option>
                                 <option value="Genap" {{ 'Genap' === $currentSemester ? 'selected' : '' }}>Genap</option>
                             </select>
+                            <small id="semester-help" class="text-gray-500 text-xs mt-1 hidden">Pilih semester untuk memfilter data penilaian</small>
                         </div>
                     </div>
                     
                     <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-end">
-                        <button type="submit" class="w-full sm:w-auto px-6 py-2 text-sm font-semibold whitespace-nowrap min-h-[44px] sm:min-h-auto bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition filter-submit-btn flex items-center justify-center gap-2">
-                            <svg class="w-4 h-4 filter-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <button type="submit" 
+                                title="Terapkan filter untuk menampilkan data sesuai pilihan tahun ajaran dan semester"
+                                aria-label="Terapkan filter"
+                                class="w-full sm:w-auto px-6 py-2 text-sm font-semibold whitespace-nowrap min-h-[44px] sm:min-h-auto bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition filter-submit-btn flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4 filter-icon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V19a1 1 0 01-1.447.894l-4-2A1 1 0 016 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
                             </svg>
                             <span class="filter-text">Filter</span>
-                            <svg class="w-4 h-4 filter-spinner hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 filter-spinner hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
@@ -386,7 +405,7 @@
             @endif
 
             <!-- Students List (Simplified) -->
-            <form action="{{ route('guru.export.rapor.massal') }}" method="POST" id="bulk-export-form">
+            <form action="{{ route('guru.export.rapor.massal') }}" method="POST" id="bulk-export-form" aria-label="Formulir ekspor dan kelola daftar siswa">
                 @csrf
                 <div class="bg-white rounded-lg shadow-md overflow-hidden animate-fade-in-up" style="animation-delay: 0.25s;">
                     <div class="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center" id="siswa-list">
@@ -400,18 +419,18 @@
                         </div>
                         <div class="flex gap-2">
                             @if($penilaians->isNotEmpty())
-                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition flex items-center gap-2 download-submit-btn">
-                                    <svg class="w-4 h-4 download-icon" fill="currentColor" viewBox="0 0 20 20">
+                                <button type="submit" title="Unduh data siswa yang dipilih dalam format Excel" aria-label="Unduh data siswa yang dipilih" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition flex items-center gap-2 download-submit-btn">
+                                    <svg class="w-4 h-4 download-icon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                     </svg>
                                     <span class="download-text">Download Massal</span>
-                                    <svg class="w-4 h-4 download-spinner hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 download-spinner hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
                                 </button>
-                                <a href="{{ route('guru.export.rapor.kelas', ['kelompok_kelas' => $kelas, 'tahun_ajaran' => $currentTahunAjaran, 'semester' => $currentSemester]) }}" target="_blank" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <a href="{{ route('guru.export.rapor.kelas', ['kelompok_kelas' => $kelas, 'tahun_ajaran' => $currentTahunAjaran, 'semester' => $currentSemester]) }}" target="_blank" title="Cetak semua data siswa dalam format PDF (membuka tab baru)" aria-label="Cetak semua data siswa" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                         <path d="M5 4v2h6V4H5zm6 10H5v2h6v-2zm3-6v6a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2h6a2 2 0 012 2v4zm-2 0V4H5v10h6V8z" />
                                     </svg>
                                     Cetak Semua
@@ -425,38 +444,52 @@
                         <div class="px-3 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-200">
                             <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
                                 <div class="flex-1 relative min-w-0">
+                                    <label for="student-search" class="sr-only">Cari siswa berdasarkan nama atau NISN</label>
                                     <input 
                                         type="text" 
                                         id="student-search" 
                                         placeholder="Cari siswa..." 
+                                        title="Ketik nama siswa atau NISN untuk mencari"
+                                        aria-label="Cari siswa berdasarkan nama atau NISN"
+                                        aria-describedby="search-help"
                                         class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px] sm:min-h-auto"
                                     >
-                                    <svg class="absolute right-3 top-2.5 sm:top-3 w-5 h-5 text-gray-400 pointer-events-none flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="absolute right-3 top-2.5 sm:top-3 w-5 h-5 text-gray-400 pointer-events-none flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
+                                    <small id="search-help" class="text-gray-500 text-xs mt-1 hidden">Ketik nama lengkap atau NISN untuk memfilter daftar siswa</small>
                                 </div>
                                 <button 
                                     id="clear-search" 
+                                    type="button"
+                                    title="Hapus pencarian dan tampilkan semua siswa"
+                                    aria-label="Bersihkan pencarian"
                                     class="px-3 sm:px-4 py-2 text-sm font-semibold bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition whitespace-nowrap min-h-[44px] sm:min-h-auto"
                                 >
                                     Bersihkan
                                 </button>
-                                <div class="py-2 px-3 bg-gray-100 rounded-lg text-xs sm:text-sm text-gray-600 font-medium whitespace-nowrap">
+                                <div class="py-2 px-3 bg-gray-100 rounded-lg text-xs sm:text-sm text-gray-600 font-medium whitespace-nowrap" aria-live="polite" role="status">
                                     <span class="hidden sm:inline">Hasil: </span><span id="search-count">{{ count($siswas) }}</span>
                                 </div>
                             </div>
                         </div>
 
-                        <table class="w-full text-sm">
+                        <table class="w-full text-sm" role="table" aria-label="Daftar siswa dan status penilaian">
                             <thead class="bg-gray-100 border-b border-gray-200">
-                                <tr>
-                                    <th class="px-6 py-3 text-left font-semibold text-gray-700">
-                                        <input type="checkbox" id="select-all" class="rounded">
+                                <tr role="row">
+                                    <th class="px-6 py-3 text-left font-semibold text-gray-700" scope="col">
+                                        <input 
+                                            type="checkbox" 
+                                            id="select-all" 
+                                            title="Pilih atau lepas pilihan semua siswa"
+                                            aria-label="Pilih semua siswa di tabel"
+                                            class="rounded"
+                                        >
                                     </th>
-                                    <th class="px-6 py-3 text-left font-semibold text-gray-700">Nama Siswa</th>
-                                    <th class="px-6 py-3 text-left font-semibold text-gray-700">NISN</th>
-                                    <th class="px-6 py-3 text-center font-semibold text-gray-700">Status</th>
-                                    <th class="px-6 py-3 text-right font-semibold text-gray-700">Aksi</th>
+                                    <th class="px-6 py-3 text-left font-semibold text-gray-700" scope="col">Nama Siswa</th>
+                                    <th class="px-6 py-3 text-left font-semibold text-gray-700" scope="col">NISN</th>
+                                    <th class="px-6 py-3 text-center font-semibold text-gray-700" scope="col">Status Penilaian</th>
+                                    <th class="px-6 py-3 text-right font-semibold text-gray-700" scope="col">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200" id="students-table-body">
@@ -474,15 +507,15 @@
                                         <td class="px-6 py-4 text-gray-600 text-sm">{{ $siswa->nisn ?? '-' }}</td>
                                         <td class="px-6 py-4 text-center">
                                             @if ($penilaian)
-                                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center justify-center gap-1 mx-auto w-fit">
-                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center justify-center gap-1 mx-auto w-fit" title="Siswa ini sudah dinilai" aria-label="Status: Dinilai">
+                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                                     </svg>
                                                     Dinilai
                                                 </span>
                                             @else
-                                                <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full flex items-center justify-center gap-1 mx-auto w-fit">
-                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full flex items-center justify-center gap-1 mx-auto w-fit" title="Siswa ini belum dinilai, silakan buat rapor" aria-label="Status: Belum dinilai">
+                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.5a1 1 0 002 0V7zm0 7a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
                                                     </svg>
                                                     Belum
@@ -492,11 +525,11 @@
                                         <td class="px-6 py-4 text-right">
                                             <div class="flex gap-2 justify-end">
                                                 @if ($penilaian)
-                                                    <a href="{{ route('guru.penilaian.edit', $penilaian) }}" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-semibold hover:bg-blue-200 transition">
+                                                    <a href="{{ route('guru.penilaian.edit', $penilaian) }}" title="Edit penilaian untuk {{ $siswa->nama_lengkap }}" aria-label="Edit penilaian - {{ $siswa->nama_lengkap }}" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-semibold hover:bg-blue-200 transition">
                                                         Edit
                                                     </a>
                                                 @else
-                                                    <a href="{{ route('guru.siswa.penilaian.create', $siswa) }}" class="px-2 py-1 bg-green-600 text-white rounded text-xs font-semibold hover:bg-green-700 transition">
+                                                    <a href="{{ route('guru.siswa.penilaian.create', $siswa) }}" title="Buat rapor baru untuk {{ $siswa->nama_lengkap }}" aria-label="Buat Rapor - {{ $siswa->nama_lengkap }}" class="px-2 py-1 bg-green-600 text-white rounded text-xs font-semibold hover:bg-green-700 transition">
                                                         Buat Rapor
                                                     </a>
                                                 @endif
