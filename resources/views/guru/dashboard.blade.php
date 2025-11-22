@@ -430,34 +430,62 @@
                     <div class="overflow-x-auto">
                         <!-- Search Box for Students Table -->
                         <div class="px-3 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-200">
-                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                                <div class="flex-1 relative min-w-0">
-                                    <label for="student-search" class="sr-only">Cari siswa berdasarkan nama atau NISN</label>
-                                    <input 
-                                        type="text" 
-                                        id="student-search" 
-                                        placeholder="Cari siswa..." 
-                                        title="Ketik nama siswa atau NISN untuk mencari"
-                                        aria-label="Cari siswa berdasarkan nama atau NISN"
-                                        aria-describedby="search-help"
-                                        class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px] sm:min-h-auto"
+                            <div class="flex flex-col gap-3">
+                                <!-- Main Search Row -->
+                                <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                                    <div class="flex-1 relative min-w-0">
+                                        <label for="student-search" class="sr-only">Cari siswa berdasarkan nama atau NISN</label>
+                                        <input 
+                                            type="text" 
+                                            id="student-search" 
+                                            placeholder="Cari siswa..." 
+                                            title="Ketik nama siswa atau NISN untuk mencari"
+                                            aria-label="Cari siswa berdasarkan nama atau NISN"
+                                            aria-describedby="search-help"
+                                            class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px] sm:min-h-auto"
+                                        >
+                                        <svg class="absolute right-3 top-2.5 sm:top-3 w-5 h-5 text-gray-400 pointer-events-none flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                        </svg>
+                                        <small id="search-help" class="text-gray-500 text-xs mt-1 hidden">Ketik nama lengkap atau NISN untuk memfilter daftar siswa</small>
+                                    </div>
+                                    <button 
+                                        id="clear-search" 
+                                        type="button"
+                                        title="Hapus pencarian dan tampilkan semua siswa"
+                                        aria-label="Bersihkan pencarian"
+                                        class="px-3 sm:px-4 py-2 text-sm font-semibold bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition whitespace-nowrap min-h-[44px] sm:min-h-auto"
                                     >
-                                    <svg class="absolute right-3 top-2.5 sm:top-3 w-5 h-5 text-gray-400 pointer-events-none flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                    <small id="search-help" class="text-gray-500 text-xs mt-1 hidden">Ketik nama lengkap atau NISN untuk memfilter daftar siswa</small>
+                                        Bersihkan
+                                    </button>
+                                    <div class="py-2 px-3 bg-gray-100 rounded-lg text-xs sm:text-sm text-gray-600 font-medium whitespace-nowrap" aria-live="polite" role="status">
+                                        <span class="hidden sm:inline">Hasil: </span><span id="search-count">{{ count($siswas) }}</span>
+                                    </div>
                                 </div>
-                                <button 
-                                    id="clear-search" 
-                                    type="button"
-                                    title="Hapus pencarian dan tampilkan semua siswa"
-                                    aria-label="Bersihkan pencarian"
-                                    class="px-3 sm:px-4 py-2 text-sm font-semibold bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition whitespace-nowrap min-h-[44px] sm:min-h-auto"
-                                >
-                                    Bersihkan
-                                </button>
-                                <div class="py-2 px-3 bg-gray-100 rounded-lg text-xs sm:text-sm text-gray-600 font-medium whitespace-nowrap" aria-live="polite" role="status">
-                                    <span class="hidden sm:inline">Hasil: </span><span id="search-count">{{ count($siswas) }}</span>
+
+                                <!-- Advanced Filter Row -->
+                                <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-center">
+                                    <label for="status-filter" class="text-xs font-semibold text-gray-600 py-2 sm:py-0 whitespace-nowrap">Filter Status:</label>
+                                    <select 
+                                        id="status-filter"
+                                        title="Pilih status penilaian untuk memfilter"
+                                        aria-label="Filter berdasarkan status penilaian"
+                                        class="flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px] sm:min-h-auto"
+                                    >
+                                        <option value="">Semua Status</option>
+                                        <option value="completed">Sudah Dinilai</option>
+                                        <option value="pending">Belum Dinilai</option>
+                                    </select>
+                                    
+                                    <button 
+                                        id="reset-filters"
+                                        type="button"
+                                        title="Reset semua filter ke kondisi awal"
+                                        aria-label="Reset semua filter"
+                                        class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition whitespace-nowrap min-h-[44px] sm:min-h-auto"
+                                    >
+                                        Reset Filter
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -572,22 +600,36 @@
                     });
                 });
 
-                // Student search/filter functionality
+                // Student search/filter functionality with advanced filtering
                 const searchInput = document.getElementById('student-search');
                 const clearButton = document.getElementById('clear-search');
+                const statusFilter = document.getElementById('status-filter');
+                const resetButton = document.getElementById('reset-filters');
                 const studentRows = document.querySelectorAll('.student-row');
                 const searchCountSpan = document.getElementById('search-count');
 
                 function filterStudents() {
                     const searchTerm = searchInput.value.toLowerCase().trim();
+                    const statusFilterValue = statusFilter?.value || '';
                     let visibleCount = 0;
 
                     studentRows.forEach(function(row) {
                         const name = row.getAttribute('data-name');
                         const nisn = row.getAttribute('data-nisn');
+                        
+                        // Get status from row (check if "Dinilai" span is visible)
+                        const statusBadge = row.querySelector('[aria-label*="Status:"]');
+                        const isCompleted = statusBadge && statusBadge.getAttribute('aria-label').includes('Dinilai');
+                        const rowStatus = isCompleted ? 'completed' : 'pending';
 
-                        // Show row if search term matches name or NISN (or if no search term)
-                        if (searchTerm === '' || name.includes(searchTerm) || nisn.includes(searchTerm)) {
+                        // Check search term match
+                        const searchMatch = searchTerm === '' || name.includes(searchTerm) || nisn.includes(searchTerm);
+                        
+                        // Check status filter match
+                        const statusMatch = statusFilterValue === '' || rowStatus === statusFilterValue;
+
+                        // Show row if both filters match
+                        if (searchMatch && statusMatch) {
                             row.style.display = '';
                             visibleCount++;
                         } else {
@@ -611,9 +653,22 @@
                     searchInput.addEventListener('change', filterStudents);
                 }
 
+                if (statusFilter) {
+                    statusFilter.addEventListener('change', filterStudents);
+                }
+
                 if (clearButton) {
                     clearButton.addEventListener('click', function() {
                         searchInput.value = '';
+                        filterStudents();
+                        searchInput.focus();
+                    });
+                }
+
+                if (resetButton) {
+                    resetButton.addEventListener('click', function() {
+                        searchInput.value = '';
+                        statusFilter.value = '';
                         filterStudents();
                         searchInput.focus();
                     });
