@@ -140,10 +140,10 @@ class ExportController extends Controller
 
         $callback = function () use ($penilaians) {
             $file = fopen('php://output', 'w');
-            
+
             // BOM for Excel to recognize UTF-8
-            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
-            
+            fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
             // Header
             fputcsv($file, ['NISN', 'Nama Siswa', 'Kelas', 'Tahun Ajaran', 'Semester', 'Status', 'Terakhir Diupdate']);
 
@@ -232,7 +232,7 @@ class ExportController extends Controller
 
         // Generate Excel using simple approach
         $fileName = 'export_siswa_' . date('Ymd_His') . '.xlsx';
-        
+
         // Convert to SiswaExport format
         $data = $penilaians->map(function ($penilaian) {
             return [

@@ -705,6 +705,60 @@
                             </div>
                         </div>
 
+                        <!-- PROGRESS MODAL (Hidden by default) -->
+                        <div id="progress-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                            <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+                                <!-- Header -->
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-800" id="progress-title">Memproses...</h3>
+                                    <button 
+                                        type="button" 
+                                        id="progress-close"
+                                        class="text-gray-500 hover:text-gray-700"
+                                        aria-label="Tutup progress modal"
+                                    >
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <!-- Progress Info -->
+                                <div class="mb-4">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span id="progress-text" class="text-sm font-medium text-gray-700">0%</span>
+                                        <span id="progress-time" class="text-xs text-gray-500">Estimasi waktu: --</span>
+                                    </div>
+
+                                    <!-- Progress Bar -->
+                                    <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                        <div 
+                                            id="progress-bar" 
+                                            class="bg-gradient-to-r from-blue-500 to-blue-600 h-3 transition-all duration-300"
+                                            style="width: 0%"
+                                        ></div>
+                                    </div>
+                                </div>
+
+                                <!-- Status Info -->
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                                    <p class="text-sm text-gray-700">
+                                        <span id="progress-current" class="font-semibold">0</span> / 
+                                        <span id="progress-total" class="font-semibold">0</span> item diproses
+                                    </p>
+                                </div>
+
+                                <!-- Cancel Button -->
+                                <button 
+                                    type="button"
+                                    id="progress-cancel"
+                                    class="w-full px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition"
+                                >
+                                    Batalkan Proses
+                                </button>
+                            </div>
+                        </div>
+
                         <table class="w-full text-sm" role="table" aria-label="Daftar siswa dan status penilaian">
                             <thead class="bg-gray-100 border-b border-gray-200">
                                 <tr role="row">
@@ -1137,13 +1191,74 @@
                     return Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
                 }
 
-                // Export CSV
+                // Progress Modal Functions
+                function showProgressModal(title, total) {
+                    const modal = document.getElementById('progress-modal');
+                    const titleEl = document.getElementById('progress-title');
+                    const totalEl = document.getElementById('progress-total');
+                    
+                    titleEl.textContent = title;
+                    totalEl.textContent = total;
+                    modal.classList.remove('hidden');
+                    modal.style.display = 'flex';
+                }
+
+                function updateProgress(current, total) {
+                    const percentage = Math.round((current / total) * 100);
+                    const progressBar = document.getElementById('progress-bar');
+                    const progressText = document.getElementById('progress-text');
+                    const currentEl = document.getElementById('progress-current');
+                    const timeEl = document.getElementById('progress-time');
+
+                    progressBar.style.width = percentage + '%';
+                    progressText.textContent = percentage + '%';
+                    currentEl.textContent = current;
+
+                    // Estimate remaining time
+                    const itemsPerSecond = current / (Date.now() - window.progressStartTime) * 1000;
+                    if (itemsPerSecond > 0) {
+                        const secondsRemaining = Math.round((total - current) / itemsPerSecond);
+                        const minutes = Math.floor(secondsRemaining / 60);
+                        const seconds = secondsRemaining % 60;
+                        if (minutes > 0) {
+                            timeEl.textContent = `Estimasi waktu: ${minutes}m ${seconds}s`;
+                        } else {
+                            timeEl.textContent = `Estimasi waktu: ${seconds}s`;
+                        }
+                    }
+                }
+
+                function hideProgressModal() {
+                    const modal = document.getElementById('progress-modal');
+                    modal.classList.add('hidden');
+                    modal.style.display = 'none';
+                }
+
+                // Progress modal close button
+                document.getElementById('progress-close')?.addEventListener('click', hideProgressModal);
+                document.getElementById('progress-cancel')?.addEventListener('click', function() {
+                    window.cancelBulkOperation = true;
+                    hideProgressModal();
+                });
+
+                // Export CSV with progress
                 document.querySelector('[data-bulk-export-csv]')?.addEventListener('click', function() {
                     const selectedIds = getSelectedStudentIds();
                     if (selectedIds.length === 0) {
                         alert('Silakan pilih siswa terlebih dahulu');
                         return;
                     }
+
+                    window.progressStartTime = Date.now();
+                    showProgressModal('Mengekspor ke CSV...', selectedIds.length);
+                    
+                    // Simulate progress
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 30;
+                        if (progress >= 90) progress = 90;
+                        updateProgress(Math.floor(progress), selectedIds.length);
+                    }, 300);
 
                     const form = document.createElement('form');
                     form.method = 'POST';
@@ -1168,16 +1283,32 @@
                     
                     document.body.appendChild(form);
                     form.submit();
-                    document.body.removeChild(form);
+                    
+                    setTimeout(() => {
+                        clearInterval(interval);
+                        updateProgress(selectedIds.length, selectedIds.length);
+                        setTimeout(() => hideProgressModal(), 1500);
+                    }, 2000);
                 });
 
-                // Export PDF
+                // Export PDF with progress
                 document.querySelector('[data-bulk-export-pdf]')?.addEventListener('click', function() {
                     const selectedIds = getSelectedStudentIds();
                     if (selectedIds.length === 0) {
                         alert('Silakan pilih siswa terlebih dahulu');
                         return;
                     }
+
+                    window.progressStartTime = Date.now();
+                    showProgressModal('Mengekspor ke PDF...', selectedIds.length);
+                    
+                    // Simulate progress
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 25;
+                        if (progress >= 85) progress = 85;
+                        updateProgress(Math.floor(progress), selectedIds.length);
+                    }, 400);
 
                     const form = document.createElement('form');
                     form.method = 'POST';
@@ -1202,16 +1333,32 @@
                     
                     document.body.appendChild(form);
                     form.submit();
-                    document.body.removeChild(form);
+                    
+                    setTimeout(() => {
+                        clearInterval(interval);
+                        updateProgress(selectedIds.length, selectedIds.length);
+                        setTimeout(() => hideProgressModal(), 1500);
+                    }, 3000);
                 });
 
-                // Export Excel
+                // Export Excel with progress
                 document.querySelector('[data-bulk-export-excel]')?.addEventListener('click', function() {
                     const selectedIds = getSelectedStudentIds();
                     if (selectedIds.length === 0) {
                         alert('Silakan pilih siswa terlebih dahulu');
                         return;
                     }
+
+                    window.progressStartTime = Date.now();
+                    showProgressModal('Mengekspor ke Excel...', selectedIds.length);
+                    
+                    // Simulate progress
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 28;
+                        if (progress >= 88) progress = 88;
+                        updateProgress(Math.floor(progress), selectedIds.length);
+                    }, 350);
 
                     const form = document.createElement('form');
                     form.method = 'POST';
@@ -1236,7 +1383,12 @@
                     
                     document.body.appendChild(form);
                     form.submit();
-                    document.body.removeChild(form);
+                    
+                    setTimeout(() => {
+                        clearInterval(interval);
+                        updateProgress(selectedIds.length, selectedIds.length);
+                        setTimeout(() => hideProgressModal(), 1500);
+                    }, 2500);
                 });
 
                 // Bulk Status Update
