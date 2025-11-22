@@ -1,27 +1,36 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    {{-- Include Choices.js CSS for searchable dropdowns --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    
+    <form method="POST" action="{{ route('register') }}" id="registerForm">
         @csrf
 
         {{-- USER DETAILS --}}
         <h2 class="text-lg font-semibold">Detail Pengguna</h2>
         <div class="space-y-4 mt-2">
-            <!-- Name -->
+            <!-- Nama Lengkap -->
             <div>
-                <x-input-label for="name" :value="__('Nama Lengkap')" />
+                <label class="inline-flex font-medium text-sm text-gray-700">
+                    <span class="text-red-500">*</span> Nama Lengkap
+                </label>
                 <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
 
             <!-- Email Address -->
             <div>
-                <x-input-label for="email" :value="__('Email')" />
+                <label class="inline-flex font-medium text-sm text-gray-700">
+                    <span class="text-red-500">*</span> Email
+                </label>
                 <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
             
             <!-- Role -->
             <div>
-                <x-input-label for="role" :value="__('Mendaftar sebagai')" />
+                <label class="inline-flex font-medium text-sm text-gray-700">
+                    <span class="text-red-500">*</span> Mendaftar sebagai
+                </label>
                 <select id="role" name="role" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                     <option value="guru" @if(old('role') == 'guru') selected @endif>Guru</option>
                 </select>
@@ -38,13 +47,15 @@
             <div>
                 <label for="register_new_school" class="inline-flex items-center">
                     <input id="register_new_school" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="register_new_school" @if(old('register_new_school')) checked @endif>
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Daftarkan Sekolah Baru (jika belum ada di daftar)') }}</span>
+                    <span class="ms-2 text-sm text-gray-600">Daftarkan Sekolah Baru (jika belum ada di daftar)</span>
                 </label>
             </div>
 
             <!-- Existing School Dropdown -->
             <div id="existing_school_fields">
-                <x-input-label for="sekolah_id" :value="__('Pilih Sekolah Anda')" />
+                <label class="inline-flex font-medium text-sm text-gray-700">
+                    <span class="text-red-500">*</span> Pilih Sekolah Anda
+                </label>
                 <select id="sekolah_id" name="sekolah_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                     <option value="">-- Pilih Sekolah --</option>
                     @foreach($sekolahs as $sekolah)
@@ -56,39 +67,65 @@
 
             <!-- New School Form Fields (Initially Hidden) -->
             <div id="new_school_fields" style="display: none;" class="space-y-4 border-t pt-4">
+                <!-- Nama Sekolah Baru -->
                 <div>
-                    <x-input-label for="nama_sekolah" :value="__('Nama Sekolah Baru')" />
+                    <label class="inline-flex font-medium text-sm text-gray-700">
+                        <span class="text-red-500">*</span> Nama Sekolah Baru
+                    </label>
                     <x-text-input id="nama_sekolah" class="block mt-1 w-full" type="text" name="nama_sekolah" :value="old('nama_sekolah')" />
                     <x-input-error :messages="$errors->get('nama_sekolah')" class="mt-2" />
                 </div>
+
+                <!-- NPSN -->
                 <div>
-                    <x-input-label for="npsn" :value="__('NPSN')" />
+                    <label class="inline-flex font-medium text-sm text-gray-700">NPSN</label>
                     <x-text-input id="npsn" class="block mt-1 w-full" type="text" name="npsn" :value="old('npsn')" />
                     <x-input-error :messages="$errors->get('npsn')" class="mt-2" />
                 </div>
+
+                <!-- Alamat -->
                 <div>
-                    <x-input-label for="alamat" :value="__('Alamat Sekolah')" />
+                    <label class="inline-flex font-medium text-sm text-gray-700">Alamat Sekolah</label>
                     <x-text-input id="alamat" class="block mt-1 w-full" type="text" name="alamat" :value="old('alamat')" />
                     <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
                 </div>
+
+                <!-- Provinsi -->
                 <div>
-                    <x-input-label for="provinsi" :value="__('Provinsi')" />
-                    <x-text-input id="provinsi" class="block mt-1 w-full" type="text" name="provinsi" :value="old('provinsi')" />
+                    <label for="provinsi" class="inline-flex font-medium text-sm text-gray-700">
+                        <span class="text-red-500">*</span> Provinsi
+                    </label>
+                    <select id="provinsi" name="provinsi" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <option value="">-- Pilih Provinsi --</option>
+                    </select>
                     <x-input-error :messages="$errors->get('provinsi')" class="mt-2" />
                 </div>
+
+                <!-- Kabupaten/Kota -->
                 <div>
-                    <x-input-label for="kabupaten" :value="__('Kabupaten/Kota')" />
-                    <x-text-input id="kabupaten" class="block mt-1 w-full" type="text" name="kabupaten" :value="old('kabupaten')" />
+                    <label for="kabupaten" class="inline-flex font-medium text-sm text-gray-700">
+                        <span class="text-red-500">*</span> Kabupaten/Kota
+                    </label>
+                    <select id="kabupaten" name="kabupaten" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <option value="">-- Pilih Kabupaten/Kota --</option>
+                    </select>
                     <x-input-error :messages="$errors->get('kabupaten')" class="mt-2" />
                 </div>
+
+                <!-- Nama Kepala Sekolah -->
                 <div>
-                    <x-input-label for="kepala_sekolah" :value="__('Nama Kepala Sekolah')" />
+                    <label class="inline-flex font-medium text-sm text-gray-700">Nama Kepala Sekolah</label>
                     <x-text-input id="kepala_sekolah" class="block mt-1 w-full" type="text" name="kepala_sekolah" :value="old('kepala_sekolah')" />
                     <x-input-error :messages="$errors->get('kepala_sekolah')" class="mt-2" />
                 </div>
+
+                <!-- Status Sekolah -->
                 <div>
-                    <x-input-label for="status_sekolah" :value="__('Status Sekolah')" />
+                    <label for="status_sekolah" class="inline-flex font-medium text-sm text-gray-700">
+                        <span class="text-red-500">*</span> Status Sekolah
+                    </label>
                     <select id="status_sekolah" name="status_sekolah" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <option value="">-- Pilih Status --</option>
                         <option value="negeri" @if(old('status_sekolah') == 'negeri') selected @endif>Negeri</option>
                         <option value="swasta" @if(old('status_sekolah') == 'swasta') selected @endif>Swasta</option>
                     </select>
@@ -100,17 +137,22 @@
         {{-- CLASS DETAILS (for Guru role) --}}
         <div id="guru_fields" style="display: none;" class="mt-6">
             <hr class="my-6">
-            <h2 class="text-lg font-semibold">Detail Kelas (Khusus Guru)</h2>
+            <h2 class="text-lg font-semibold">Detail Kelas</h2>
             <div class="space-y-4 mt-2">
                 <div>
-                    <x-input-label for="kelompok_kelas_id" :value="__('Pilih Kelas yang Akan Diampu')" />
+                    <label for="kelompok_kelas_id" class="inline-flex font-medium text-sm text-gray-700">
+                        <span class="text-red-500">*</span> Pilih Kelas yang Akan Diampu
+                    </label>
                     <select id="kelompok_kelas_id" name="kelompok_kelas_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                         {{-- Options will be populated by JS --}}
                     </select>
+                    <x-input-error :messages="$errors->get('kelompok_kelas_id')" class="mt-2" />
                 </div>
                 <div id="new_kelas_fields" style="display: none;" class="space-y-4">
                     <div>
-                        <x-input-label for="nama_kelompok_kelas_baru" :value="__('Nama Kelas Baru')" />
+                        <label class="inline-flex font-medium text-sm text-gray-700">
+                            <span class="text-red-500">*</span> Nama Kelas Baru
+                        </label>
                         <x-text-input id="nama_kelompok_kelas_baru" class="block mt-1 w-full" type="text" name="nama_kelompok_kelas_baru" :value="old('nama_kelompok_kelas_baru')" />
                         <x-input-error :messages="$errors->get('nama_kelompok_kelas_baru')" class="mt-2" />
                     </div>
@@ -121,18 +163,23 @@
         <hr class="my-6">
 
         {{-- PASSWORD --}}
-        <h2 class="text-lg font-semibold">Password</h2>
+        <h2 class="text-lg font-semibold">Kata Sandi</h2>
         <div class="space-y-4 mt-2">
             <!-- Password -->
             <div>
-                <x-input-label for="password" :value="__('Password')" />
+                <label class="inline-flex font-medium text-sm text-gray-700">
+                    <span class="text-red-500">*</span> Kata Sandi
+                </label>
                 <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                <p class="text-xs text-gray-500 mt-1">Minimal 8 karakter, harus mengandung huruf besar, huruf kecil, angka, dan simbol.</p>
             </div>
 
             <!-- Confirm Password -->
             <div>
-                <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                <label class="inline-flex font-medium text-sm text-gray-700">
+                    <span class="text-red-500">*</span> Konfirmasi Kata Sandi
+                </label>
                 <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
@@ -140,15 +187,18 @@
 
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Sudah punya akun?') }}
+                Sudah punya akun?
             </a>
 
-            <x-primary-button class="ms-4">
-                {{ __('Daftar') }}
-            </x-primary-button>
+            <button type="submit" class="ms-4 inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                Daftar
+            </button>
         </div>
     </form>
 
+    {{-- Include Choices.js JS for searchable dropdowns --}}
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Element selectors
@@ -162,6 +212,50 @@
             const existingSchoolFields = document.getElementById('existing_school_fields');
             const newSchoolFields = document.getElementById('new_school_fields');
             const newSchoolInputs = newSchoolFields.querySelectorAll('input, select');
+            
+            // Provinsi & Kabupaten
+            const provinsiSelect = document.getElementById('provinsi');
+            const kabupatenSelect = document.getElementById('kabupaten');
+
+            // Initialize Choices.js for searchable dropdowns
+            const sekolahChoices = new Choices(sekolahSelect, {
+                searchEnabled: true,
+                searchPlaceholderValue: 'Cari sekolah...',
+                shouldSort: false,
+                noResultsText: 'Tidak ada hasil',
+                noChoicesText: 'Tidak ada pilihan',
+                itemSelectText: 'Pilih',
+            });
+
+            const kelasChoices = new Choices(kelasSelect, {
+                searchEnabled: true,
+                searchPlaceholderValue: 'Cari kelas...',
+                shouldSort: false,
+                noResultsText: 'Tidak ada hasil',
+                noChoicesText: 'Tidak ada pilihan',
+                itemSelectText: 'Pilih',
+            });
+
+            const provinsiChoices = new Choices(provinsiSelect, {
+                searchEnabled: true,
+                searchPlaceholderValue: 'Cari provinsi...',
+                shouldSort: false,
+                noResultsText: 'Tidak ada hasil',
+                noChoicesText: 'Tidak ada pilihan',
+                itemSelectText: 'Pilih',
+            });
+
+            const kabupatenChoices = new Choices(kabupatenSelect, {
+                searchEnabled: true,
+                searchPlaceholderValue: 'Cari kabupaten/kota...',
+                shouldSort: false,
+                noResultsText: 'Tidak ada hasil',
+                noChoicesText: 'Tidak ada pilihan',
+                itemSelectText: 'Pilih',
+            });
+
+            // Load Provinsi on page load
+            loadProvinsi();
 
             // --- School Toggle Logic ---
             function toggleSchoolFields() {
@@ -176,15 +270,66 @@
                     sekolahSelect.disabled = false;
                     newSchoolInputs.forEach(input => input.disabled = true);
                 }
-                updateGuruFieldsVisibility(); // Also update guru fields when school selection changes
+                updateGuruFieldsVisibility();
             }
-            
+
+            // --- Load Provinsi ---
+            async function loadProvinsi() {
+                try {
+                    const response = await fetch('/api/provinsi');
+                    const provinsiData = await response.json();
+                    
+                    // Clear existing options (keep placeholder)
+                    provinsiChoices.clearStore();
+                    
+                    // Add placeholder
+                    provinsiChoices.setChoices(
+                        provinsiData.map(prov => ({
+                            value: prov.id,
+                            label: prov.name,
+                        })),
+                        'value',
+                        'label',
+                        false
+                    );
+                } catch (error) {
+                    console.error('Error loading provinsi:', error);
+                }
+            }
+
+            // --- Load Kabupaten when Provinsi changes ---
+            provinsiSelect.addEventListener('change', async function () {
+                const provinsiId = this.value;
+                kabupatenChoices.clearStore();
+                kabupatenSelect.value = '';
+
+                if (!provinsiId) return;
+
+                try {
+                    const response = await fetch(`/api/provinsi/${provinsiId}/kabupaten`);
+                    const kabupatenData = await response.json();
+                    
+                    kabupatenChoices.setChoices(
+                        kabupatenData.map((kab, index) => ({
+                            value: kab,
+                            label: kab,
+                        })),
+                        'value',
+                        'label',
+                        false
+                    );
+                } catch (error) {
+                    console.error('Error loading kabupaten:', error);
+                }
+            });
 
             // --- Guru Fields Logic ---
             async function fetchKelas(sekolahId) {
-                kelasSelect.innerHTML = '<option>Loading...</option>';
+                kelasChoices.clearStore();
+                
                 if (!sekolahId) {
                     kelasSelect.innerHTML = '<option value="">-- Pilih Sekolah Terlebih Dahulu --</option>';
+                    kelasChoices.init();
                     return;
                 }
 
@@ -192,12 +337,19 @@
                     const response = await fetch(`/api/sekolah/${sekolahId}/kelas`);
                     const data = await response.json();
                     
-                    kelasSelect.innerHTML = ''; // Clear options
-                    kelasSelect.add(new Option('-- Pilih Kelas --', ''));
+                    const choices = [];
                     data.forEach(kelas => {
-                        kelasSelect.add(new Option(kelas.nama_kelompok, kelas.id));
+                        choices.push({
+                            value: kelas.id,
+                            label: kelas.nama_kelompok,
+                        });
                     });
-                    kelasSelect.add(new Option('**Buat Kelas Baru**', 'new_class'));
+                    choices.push({
+                        value: 'new_class',
+                        label: '** Buat Kelas Baru **',
+                    });
+
+                    kelasChoices.setChoices(choices, 'value', 'label', false);
 
                 } catch (error) {
                     console.error('Error fetching kelas:', error);
@@ -223,20 +375,104 @@
                 if (isGuru && (isNewSchool || existingSchoolSelected)) {
                     guruFields.style.display = 'block';
                     if (isNewSchool) {
-                        // If it's a new school, there are no classes to fetch.
-                        // Force the "Create New Class" option.
-                        kelasSelect.innerHTML = ''; // Clear options
-                        kelasSelect.add(new Option('**Buat Kelas Baru**', 'new_class'));
+                        kelasChoices.clearStore();
+                        kelasChoices.setChoices([
+                            {
+                                value: 'new_class',
+                                label: '** Buat Kelas Baru **',
+                            }
+                        ], 'value', 'label', false);
                         kelasSelect.value = 'new_class';
                         toggleNewKelasField();
                     } else {
-                        // If an existing school is selected, fetch its classes.
                         fetchKelas(sekolahSelect.value);
                     }
                 } else {
                     guruFields.style.display = 'none';
                 }
             }
+
+            // --- Form Validation ---
+            document.getElementById('registerForm').addEventListener('submit', function (e) {
+                let isValid = true;
+                const errors = [];
+
+                // Check required fields
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                const passwordConfirm = document.getElementById('password_confirmation').value;
+                const isNewSchool = registerNewSchoolCheckbox.checked;
+                const isGuru = roleSelect.value === 'guru';
+
+                if (!name) {
+                    errors.push('Nama Lengkap wajib diisi');
+                    isValid = false;
+                }
+
+                if (!email) {
+                    errors.push('Email wajib diisi');
+                    isValid = false;
+                }
+
+                if (!password) {
+                    errors.push('Kata Sandi wajib diisi');
+                    isValid = false;
+                }
+
+                if (password !== passwordConfirm) {
+                    errors.push('Kata Sandi dan Konfirmasi tidak cocok');
+                    isValid = false;
+                }
+
+                if (isNewSchool) {
+                    const namaSekolah = document.getElementById('nama_sekolah').value.trim();
+                    const provinsi = provinsiSelect.value;
+                    const kabupaten = kabupatenSelect.value;
+                    const status = document.getElementById('status_sekolah').value;
+
+                    if (!namaSekolah) {
+                        errors.push('Nama Sekolah Baru wajib diisi');
+                        isValid = false;
+                    }
+                    if (!provinsi) {
+                        errors.push('Provinsi wajib dipilih');
+                        isValid = false;
+                    }
+                    if (!kabupaten) {
+                        errors.push('Kabupaten/Kota wajib dipilih');
+                        isValid = false;
+                    }
+                    if (!status) {
+                        errors.push('Status Sekolah wajib dipilih');
+                        isValid = false;
+                    }
+                } else {
+                    if (!sekolahSelect.value) {
+                        errors.push('Sekolah wajib dipilih');
+                        isValid = false;
+                    }
+                }
+
+                if (isGuru) {
+                    if (!kelasSelect.value) {
+                        errors.push('Kelas wajib dipilih');
+                        isValid = false;
+                    }
+                    if (kelasSelect.value === 'new_class') {
+                        const namaKelas = document.getElementById('nama_kelompok_kelas_baru').value.trim();
+                        if (!namaKelas) {
+                            errors.push('Nama Kelas Baru wajib diisi');
+                            isValid = false;
+                        }
+                    }
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                    alert('Mohon lengkapi formulir:\n\n' + errors.join('\n'));
+                }
+            });
 
             // Event Listeners
             registerNewSchoolCheckbox.addEventListener('change', toggleSchoolFields);

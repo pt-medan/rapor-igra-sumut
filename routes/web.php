@@ -31,8 +31,10 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-// Route to get kelas list for registration form
+// API Routes for Registration Form
 Route::get('/api/sekolah/{sekolah}/kelas', [App\Http\Controllers\Api\KelompokKelasController::class, 'getBySekolah'])->name('api.sekolah.kelas');
+Route::get('/api/provinsi', [App\Http\Controllers\Api\ProvinsiKabupatenController::class, 'getProvinsi'])->name('api.provinsi');
+Route::get('/api/provinsi/{provinsiId}/kabupaten', [App\Http\Controllers\Api\ProvinsiKabupatenController::class, 'getKabupaten'])->name('api.kabupaten');
 
 // Admin Provinsi Routes
 Route::middleware(['auth', 'role:admin_provinsi'])->prefix('admin/provinsi')->name('admin.provinsi.')->group(function () {
