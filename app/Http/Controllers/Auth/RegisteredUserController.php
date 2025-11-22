@@ -69,7 +69,15 @@ class RegisteredUserController extends Controller
                     ->withInput();
             }
 
-            $sekolah = Sekolah::create($request->only(['nama_sekolah', 'npsn', 'alamat', 'provinsi', 'kabupaten', 'kepala_sekolah', 'status_sekolah']));
+            $sekolah = Sekolah::create([
+                'nama_sekolah' => $request->nama_sekolah,
+                'npsn' => $request->npsn,
+                'alamat' => $request->alamat,
+                'provinsi' => $request->provinsi,
+                'kabupaten' => $request->kabupaten,
+                'kepala_sekolah' => $request->kepala_sekolah,
+                'status' => $request->status_sekolah,
+            ]);
             $sekolahId = $sekolah->id;
         } else {
             // Validasi untuk sekolah yang sudah terdaftar

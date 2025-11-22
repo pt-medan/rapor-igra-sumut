@@ -33,6 +33,7 @@ require __DIR__ . '/auth.php';
 
 // API Routes for Registration Form
 Route::get('/api/sekolah/{sekolah}/kelas', [App\Http\Controllers\Api\KelompokKelasController::class, 'getBySekolah'])->name('api.sekolah.kelas');
+Route::get('/api/sekolah/search', [App\Http\Controllers\Api\ProvinsiKabupatenController::class, 'searchSekolah'])->name('api.sekolah.search');
 Route::get('/api/provinsi', [App\Http\Controllers\Api\ProvinsiKabupatenController::class, 'getProvinsi'])->name('api.provinsi');
 Route::get('/api/provinsi/{provinsiId}/kabupaten', [App\Http\Controllers\Api\ProvinsiKabupatenController::class, 'getKabupaten'])->name('api.kabupaten');
 

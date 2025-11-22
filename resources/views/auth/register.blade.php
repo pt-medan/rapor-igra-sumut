@@ -227,6 +227,26 @@
                 itemSelectText: 'Pilih',
             });
 
+            // Handle sekolah search with custom callback
+            sekolahSelect.addEventListener('search', async function (event) {
+                const query = event.detail.value;
+                if (query.length > 0) {
+                    try {
+                        const response = await fetch(`/api/sekolah/search?q=${encodeURIComponent(query)}`);
+                        const results = await response.json();
+                        
+                        const choices = results.map(sekolah => ({
+                            value: sekolah.id,
+                            label: sekolah.nama_sekolah,
+                        }));
+                        
+                        sekolahChoices.setChoices(choices, 'value', 'label', true);
+                    } catch (error) {
+                        console.error('Error searching sekolah:', error);
+                    }
+                }
+            });
+
             const kelasChoices = new Choices(kelasSelect, {
                 searchEnabled: true,
                 searchPlaceholderValue: 'Cari kelas...',
