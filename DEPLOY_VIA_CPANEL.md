@@ -29,7 +29,7 @@ SSH connection timeout terjadi. Sementara menunggu JagoanHosting response, kita 
 ### **Step 3: Navigate to Application Folder**
 
 ```bash
-cd /public_html
+cd /home/igrasumu/public_html
 pwd
 # Should show: /home/igrasumu/public_html
 ```
@@ -38,10 +38,10 @@ pwd
 
 ```bash
 # Create backup of current application
-cp -r /public_html /public_html.backup.$(date +%Y%m%d)
+cp -r /home/igrasumu/public_html /home/igrasumu/public_html.backup.$(date +%Y%m%d)
 
 # Verify backup created
-ls -la /
+ls -la /home/igrasumu/
 ```
 
 ### **Step 5: Clone GitHub Repository**
@@ -63,18 +63,18 @@ ls -la
 ### **Step 6: Copy Code to Production**
 
 ```bash
-# Copy all files to public_html
-cp -r /tmp/rapor-app/* /public_html/
+# Copy all files to public_html (but preserve existing .env first)
+cp -r /tmp/rapor-app/* /home/igrasumu/public_html/
 
 # Verify
-ls -la /public_html/
+ls -la /home/igrasumu/public_html/
 ```
 
 ### **Step 7: Setup .env File**
 
 ```bash
 # Go to application folder
-cd /public_html
+cd /home/igrasumu/public_html
 
 # Copy .env.example to .env
 cp .env.example .env
@@ -117,7 +117,7 @@ php --version
 ### **Step 9: Install Dependencies**
 
 ```bash
-cd /public_html
+cd /home/igrasumu/public_html
 
 # Install PHP dependencies
 composer install --no-dev
@@ -229,23 +229,33 @@ tail -f storage/logs/laravel.log
 ```bash
 # 1. Login via cPanel Terminal, then:
 
-cd /public_html
+cd /home/igrasumu/public_html
 
-# 2. Backup
-cp -r /public_html /public_html.backup.$(date +%Y%m%d)
+# 2. Backup FIRST
+cp -r /home/igrasumu/public_html /home/igrasumu/public_html.backup.$(date +%Y%m%d)
+ls -la /home/igrasumu/
 
-# 3. Clone
+# 3. Clone repository
 cd /tmp
 git clone https://github.com/pt-medan/rapor-igra-sumut.git rapor-app
-cp -r rapor-app/* /public_html/
+cd rapor-app
+ls -la
 
-# 4. Setup .env
-cd /public_html
+# 4. Copy to production
+cp -r /tmp/rapor-app/* /home/igrasumu/public_html/
+ls -la /home/igrasumu/public_html/
+
+# 5. Setup .env
+cd /home/igrasumu/public_html
 cp .env.example .env
 nano .env
-# Edit database credentials
+# Edit these lines:
+# DB_DATABASE=igrasumu_rapor
+# DB_USERNAME=igrasumu_sefri
+# DB_PASSWORD=S3frifadhlan
+# Then: Ctrl+O, Enter, Ctrl+X
 
-# 5. Install & Deploy
+# 6. Install & Deploy
 composer install --no-dev
 php artisan key:generate
 php artisan migrate --force
@@ -254,11 +264,11 @@ php artisan storage:link
 php artisan cache:clear
 php artisan config:clear
 
-# 6. Fix permissions
+# 7. Fix permissions
 chmod -R 775 storage/
 chmod -R 775 bootstrap/cache/
 
-# 7. Done! Test website
+# 8. Done! Test website at https://igrasumut.com
 ```
 
 ---
@@ -268,14 +278,14 @@ chmod -R 775 bootstrap/cache/
 ### Quick Rollback:
 ```bash
 # Restore from backup
-rm -rf /public_html/*
-cp -r /public_html.backup.YYYYMMDD/* /public_html/
+rm -rf /home/igrasumu/public_html/*
+cp -r /home/igrasumu/public_html.backup.YYYYMMDD/* /home/igrasumu/public_html/
 ```
 
 ### Check Errors:
 ```bash
 # View error logs
-tail -f /public_html/storage/logs/laravel.log
+tail -f /home/igrasumu/public_html/storage/logs/laravel.log
 
 # Or via cPanel File Manager:
 # Navigate to: public_html/storage/logs/
