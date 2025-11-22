@@ -627,6 +627,84 @@
                             </div>
                         </div>
 
+                        <!-- BULK ACTIONS TOOLBAR -->
+                        <div data-bulk-actions class="hidden mb-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 flex items-center justify-between gap-4 animate-slide-down">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-semibold text-gray-700">
+                                    <data-bulk-count class="font-bold text-blue-600">0</data-bulk-count>
+                                    siswa dipilih
+                                </span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <!-- Export CSV -->
+                                <button 
+                                    type="button"
+                                    data-bulk-export-csv
+                                    title="Ekspor siswa yang dipilih ke format CSV"
+                                    aria-label="Ekspor ke CSV"
+                                    class="px-3 py-2 text-xs sm:text-sm font-semibold bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-1"
+                                >
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                        <path d="M14 2H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2z"></path>
+                                    </svg>
+                                    <span class="hidden sm:inline">CSV</span>
+                                </button>
+
+                                <!-- Export PDF -->
+                                <button 
+                                    type="button"
+                                    data-bulk-export-pdf
+                                    title="Ekspor siswa yang dipilih ke format PDF"
+                                    aria-label="Ekspor ke PDF"
+                                    class="px-3 py-2 text-xs sm:text-sm font-semibold bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center gap-1"
+                                >
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                        <path d="M14 2H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2z"></path>
+                                    </svg>
+                                    <span class="hidden sm:inline">PDF</span>
+                                </button>
+
+                                <!-- Export Excel -->
+                                <button 
+                                    type="button"
+                                    data-bulk-export-excel
+                                    title="Ekspor siswa yang dipilih ke format Excel"
+                                    aria-label="Ekspor ke Excel"
+                                    class="px-3 py-2 text-xs sm:text-sm font-semibold bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition flex items-center gap-1"
+                                >
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                        <path d="M14 2H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2z"></path>
+                                    </svg>
+                                    <span class="hidden sm:inline">Excel</span>
+                                </button>
+
+                                <!-- Bulk Status Update -->
+                                <button 
+                                    type="button"
+                                    data-bulk-status-update
+                                    title="Update status untuk siswa yang dipilih"
+                                    aria-label="Update status"
+                                    class="px-3 py-2 text-xs sm:text-sm font-semibold bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition flex items-center gap-1"
+                                >
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M4 2a1 1 0 00-.894.553L1.446 8H4V2zm0 6H2.236l1.659-2.5H4v2.5zm0 2H1.446L4 19.447V10zm2 0v9h6v-9H6zm8-2h2.764L16 2v6h2.554L14 8.5zm0-2h2.236L14 2.236V6zm0 11h2v-2h-2v2zm4-2h2v2h-2v-2zm0-6h2v2h-2v-2zm-2-4h2v2h-2V2zm0 4h2v2h-2V6z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="hidden sm:inline">Update</span>
+                                </button>
+
+                                <!-- Clear Selection -->
+                                <button 
+                                    type="button"
+                                    data-bulk-clear
+                                    title="Hapus semua pilihan"
+                                    aria-label="Hapus pilihan"
+                                    class="px-3 py-2 text-xs sm:text-sm font-semibold bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition"
+                                >
+                                    Hapus Pilihan
+                                </button>
+                            </div>
+                        </div>
+
                         <table class="w-full text-sm" role="table" aria-label="Daftar siswa dan status penilaian">
                             <thead class="bg-gray-100 border-b border-gray-200">
                                 <tr role="row">
@@ -959,6 +1037,257 @@
                     originalFilterStudents();
                     updateDetailRows();
                 };
+
+                // ===== MULTI-SELECT CHECKBOX FUNCTIONALITY =====
+                const selectAllCheckbox = document.getElementById('select-all');
+                const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+
+                // Update select-all checkbox state based on individual checkboxes
+                function updateSelectAllCheckbox() {
+                    const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+                    const allCheckboxes = document.querySelectorAll('.row-checkbox');
+                    
+                    if (allCheckboxes.length === 0) {
+                        selectAllCheckbox.indeterminate = false;
+                        selectAllCheckbox.checked = false;
+                    } else if (checkedBoxes.length === allCheckboxes.length) {
+                        selectAllCheckbox.indeterminate = false;
+                        selectAllCheckbox.checked = true;
+                    } else if (checkedBoxes.length > 0) {
+                        selectAllCheckbox.indeterminate = true;
+                    } else {
+                        selectAllCheckbox.indeterminate = false;
+                        selectAllCheckbox.checked = false;
+                    }
+                    
+                    updateSelectedCount();
+                }
+
+                // Update selected count and highlight rows
+                function updateSelectedCount() {
+                    const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+                    const countElement = document.querySelector('[data-bulk-count]');
+                    
+                    // Highlight selected rows
+                    document.querySelectorAll('.student-row').forEach(row => {
+                        const checkbox = row.querySelector('.row-checkbox');
+                        if (checkbox && checkbox.checked) {
+                            row.classList.add('bg-blue-50');
+                        } else {
+                            row.classList.remove('bg-blue-50');
+                        }
+                    });
+
+                    // Update count badge if it exists
+                    if (countElement) {
+                        countElement.textContent = checkedBoxes.length;
+                        if (checkedBoxes.length > 0) {
+                            countElement.classList.remove('hidden');
+                        } else {
+                            countElement.classList.add('hidden');
+                        }
+                    }
+
+                    // Show/hide bulk actions toolbar
+                    const bulkActionsToolbar = document.querySelector('[data-bulk-actions]');
+                    if (bulkActionsToolbar) {
+                        if (checkedBoxes.length > 0) {
+                            bulkActionsToolbar.style.display = 'flex';
+                            bulkActionsToolbar.classList.add('animate-slide-down');
+                        } else {
+                            bulkActionsToolbar.style.display = 'none';
+                        }
+                    }
+                }
+
+                // Select all checkbox handler
+                if (selectAllCheckbox) {
+                    selectAllCheckbox.addEventListener('change', function() {
+                        const visibleCheckboxes = Array.from(rowCheckboxes).filter(cb => {
+                            return cb.closest('.student-row').style.display !== 'none';
+                        });
+                        
+                        visibleCheckboxes.forEach(checkbox => {
+                            checkbox.checked = this.checked;
+                        });
+                        
+                        updateSelectedCount();
+                    });
+                }
+
+                // Individual checkbox handlers
+                rowCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        updateSelectAllCheckbox();
+                    });
+                });
+
+                // Update on filter changes
+                const originalFilterStudents2 = window.filterStudents;
+                window.filterStudents = function() {
+                    if (originalFilterStudents2) originalFilterStudents2();
+                    // Reset checkboxes when filtering
+                    document.getElementById('select-all').checked = false;
+                    rowCheckboxes.forEach(cb => cb.checked = false);
+                    updateSelectedCount();
+                };
+
+                // ===== BULK ACTIONS EVENT HANDLERS =====
+                function getSelectedStudentIds() {
+                    return Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
+                }
+
+                // Export CSV
+                document.querySelector('[data-bulk-export-csv]')?.addEventListener('click', function() {
+                    const selectedIds = getSelectedStudentIds();
+                    if (selectedIds.length === 0) {
+                        alert('Silakan pilih siswa terlebih dahulu');
+                        return;
+                    }
+
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '{{ route("guru.bulk.export.csv") }}';
+                    
+                    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                    if (token) {
+                        const tokenInput = document.createElement('input');
+                        tokenInput.type = 'hidden';
+                        tokenInput.name = '_token';
+                        tokenInput.value = token;
+                        form.appendChild(tokenInput);
+                    }
+                    
+                    selectedIds.forEach(id => {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'penilaian_ids[]';
+                        input.value = id;
+                        form.appendChild(input);
+                    });
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                    document.body.removeChild(form);
+                });
+
+                // Export PDF
+                document.querySelector('[data-bulk-export-pdf]')?.addEventListener('click', function() {
+                    const selectedIds = getSelectedStudentIds();
+                    if (selectedIds.length === 0) {
+                        alert('Silakan pilih siswa terlebih dahulu');
+                        return;
+                    }
+
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '{{ route("guru.bulk.export.pdf") }}';
+                    
+                    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                    if (token) {
+                        const tokenInput = document.createElement('input');
+                        tokenInput.type = 'hidden';
+                        tokenInput.name = '_token';
+                        tokenInput.value = token;
+                        form.appendChild(tokenInput);
+                    }
+                    
+                    selectedIds.forEach(id => {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'penilaian_ids[]';
+                        input.value = id;
+                        form.appendChild(input);
+                    });
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                    document.body.removeChild(form);
+                });
+
+                // Export Excel
+                document.querySelector('[data-bulk-export-excel]')?.addEventListener('click', function() {
+                    const selectedIds = getSelectedStudentIds();
+                    if (selectedIds.length === 0) {
+                        alert('Silakan pilih siswa terlebih dahulu');
+                        return;
+                    }
+
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '{{ route("guru.bulk.export.excel") }}';
+                    
+                    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                    if (token) {
+                        const tokenInput = document.createElement('input');
+                        tokenInput.type = 'hidden';
+                        tokenInput.name = '_token';
+                        tokenInput.value = token;
+                        form.appendChild(tokenInput);
+                    }
+                    
+                    selectedIds.forEach(id => {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'penilaian_ids[]';
+                        input.value = id;
+                        form.appendChild(input);
+                    });
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                    document.body.removeChild(form);
+                });
+
+                // Bulk Status Update
+                document.querySelector('[data-bulk-status-update]')?.addEventListener('click', function() {
+                    const selectedIds = getSelectedStudentIds();
+                    if (selectedIds.length === 0) {
+                        alert('Silakan pilih siswa terlebih dahulu');
+                        return;
+                    }
+
+                    const newStatus = prompt('Masukkan status baru untuk siswa yang dipilih:\n1. Dinilai\n2. Belum Dinilai\n\nMasukkan 1 atau 2:');
+                    if (!newStatus) return;
+
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '{{ route("guru.bulk.update.status") }}';
+                    
+                    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                    if (token) {
+                        const tokenInput = document.createElement('input');
+                        tokenInput.type = 'hidden';
+                        tokenInput.name = '_token';
+                        tokenInput.value = token;
+                        form.appendChild(tokenInput);
+                    }
+
+                    const statusInput = document.createElement('input');
+                    statusInput.type = 'hidden';
+                    statusInput.name = 'status';
+                    statusInput.value = newStatus;
+                    form.appendChild(statusInput);
+                    
+                    selectedIds.forEach(id => {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'penilaian_ids[]';
+                        input.value = id;
+                        form.appendChild(input);
+                    });
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                    document.body.removeChild(form);
+                });
+
+                // Clear Selection
+                document.querySelector('[data-bulk-clear]')?.addEventListener('click', function() {
+                    document.getElementById('select-all').checked = false;
+                    document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = false);
+                    updateSelectedCount();
+                });
 
                 // Collapsible sections functionality
                 const collapsibleToggles = document.querySelectorAll('[data-collapsible-toggle]');
