@@ -7,7 +7,7 @@
 
         <title>{{ config('app.name', 'E-Rapor IGRA Sumut') }}</title>
 
-        <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+        {!! \App\Helpers\FaviconHelper::getFaviconTag() !!}
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

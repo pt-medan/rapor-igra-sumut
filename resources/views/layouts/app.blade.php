@@ -6,17 +6,12 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         @php
-            $appName = \App\Models\WebsiteSetting::where('key', 'app_name')->first();
-            $favicon = \App\Models\WebsiteSetting::where('key', 'app_favicon')->first();
+            $appName = \App\Models\WebsiteSetting::getSetting('app_name', config('app.name', 'E-Rapor IGRA Sumut'));
         @endphp
 
-        <title>{{ $appName?->value ?? config('app.name', 'E-Rapor IGRA Sumut') }}</title>
+        <title>{{ $appName }}</title>
 
-        @if ($favicon?->value)
-            <link rel="icon" href="{{ asset('storage/' . $favicon->value) }}" type="image/png">
-        @else
-            <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-        @endif
+        {!! \App\Helpers\FaviconHelper::getFaviconTag() !!}
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
