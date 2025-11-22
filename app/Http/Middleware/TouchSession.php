@@ -23,9 +23,11 @@ class TouchSession
         // Laravel automatically does this, but explicitly ensure it
         if ($request->user()) {
             // Regenerate session ID every 2 hours untuk security
-            if (!$request->session()->has('last_regenerated') || 
-                now()->diffInHours($request->session()->get('last_regenerated')) >= 2) {
-                
+            if (
+                !$request->session()->has('last_regenerated') ||
+                now()->diffInHours($request->session()->get('last_regenerated')) >= 2
+            ) {
+
                 $request->session()->regenerate();
                 $request->session()->put('last_regenerated', now());
             }
