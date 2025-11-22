@@ -257,6 +257,100 @@
                 </div>
             </div>
 
+            <!-- Dashboard Analytics Section -->
+            <div class="mb-6 bg-white rounded-lg shadow-md overflow-hidden animate-fade-in-up" style="animation-delay: 0.25s;">
+                <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                        </svg>
+                        Analytics Penilaian
+                    </h3>
+                </div>
+                <div class="p-6 space-y-6">
+                    <!-- Performance Metrics Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Completion Trend -->
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-3">Tingkat Penyelesaian</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-600">Periode Saat Ini</span>
+                                    <span class="text-2xl font-bold text-indigo-600">
+                                        @if($jumlahSiswa > 0)
+                                            {{ round(($jumlahDinilai / $jumlahSiswa) * 100) }}%
+                                        @else
+                                            0%
+                                        @endif
+                                    </span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="bg-gradient-to-r from-indigo-400 to-indigo-600 h-3 rounded-full transition" style="width: {{ $jumlahSiswa > 0 ? round(($jumlahDinilai / $jumlahSiswa) * 100) : 0 }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Evaluation Status Breakdown -->
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-3">Ringkasan Status</p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">✓ Dinilai</span>
+                                    <span class="font-bold text-green-600">{{ $jumlahDinilai }}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">⏳ Belum Dinilai</span>
+                                    <span class="font-bold text-yellow-600">{{ $jumlahBelumDinilai }}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">📊 Total</span>
+                                    <span class="font-bold text-gray-800">{{ $jumlahSiswa }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity Summary -->
+                        <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-3">Aktivitas Terkini</p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Periode Aktif</span>
+                                    <span class="font-bold text-purple-600">{{ $currentTahunAjaran ?? '-' }}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Semester</span>
+                                    <span class="font-bold text-purple-600">{{ $currentSemester ?? '-' }}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Kelas Aktif</span>
+                                    <span class="font-bold text-purple-600">{{ $kelas->nama_kelas ?? '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Insights -->
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                        <p class="text-sm font-semibold text-blue-900 mb-2">💡 Insights</p>
+                        <p class="text-sm text-blue-800">
+                            @if($jumlahSiswa > 0)
+                                @if(($jumlahDinilai / $jumlahSiswa) >= 0.9)
+                                    Excellent! {{ round(($jumlahDinilai / $jumlahSiswa) * 100) }}% siswa sudah dinilai. Hampir selesai untuk periode ini.
+                                @elseif(($jumlahDinilai / $jumlahSiswa) >= 0.7)
+                                    Good progress! {{ round(($jumlahDinilai / $jumlahSiswa) * 100) }}% siswa sudah dinilai. Lanjutkan untuk menyelesaikan sisanya.
+                                @elseif(($jumlahDinilai / $jumlahSiswa) >= 0.5)
+                                    Halfway there! {{ round(($jumlahDinilai / $jumlahSiswa) * 100) }}% siswa sudah dinilai. Tingkatkan kecepatan penilaian.
+                                @else
+                                    Mulai dengan menilai siswa yang belum dinilai. Saat ini baru {{ round(($jumlahDinilai / $jumlahSiswa) * 100) }}% selesai.
+                                @endif
+                            @else
+                                Belum ada siswa di kelas ini. Tambahkan siswa terlebih dahulu.
+                            @endif
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Period Filter Section - MAKE IT OBVIOUS -->
             <div class="mb-6 bg-white rounded-lg shadow-md p-3 sm:p-4 border-l-4 border-blue-500 animate-slide-down">
                 <form method="GET" class="flex flex-col gap-3 sm:gap-4" aria-label="Filter periode penilaian">
