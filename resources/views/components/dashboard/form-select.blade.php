@@ -17,7 +17,7 @@
 
 <div class="mb-4">
     @if($label)
-        <label for="{{ $selectId }}" class="block text-sm font-medium text-gray-700 mb-1">
+        <label for="{{ $selectId }}" class="block text-sm font-semibold text-gray-700 mb-2">
             {{ $label }}
             @if($required) <span class="text-red-500">*</span> @endif
         </label>
@@ -30,7 +30,7 @@
         @if($ariaLabel) aria-label="{{ $ariaLabel }}" @endif
         @if($helpId) aria-describedby="{{ $helpId }}" @endif
         @if($required) required @endif
-        class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px] sm:min-h-auto"
+        class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-medium border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition min-h-[44px] sm:min-h-auto bg-white hover:border-gray-400 cursor-pointer"
     >
         @foreach($options as $optionValue => $optionLabel)
             <option value="{{ $optionValue }}" @if($value === (string)$optionValue) selected @endif>
@@ -40,7 +40,7 @@
     </select>
     
     @if($help && $helpId)
-        <small id="{{ $helpId }}" class="text-gray-500 text-xs mt-1 block">
+        <small id="{{ $helpId }}" class="text-gray-500 text-xs mt-1.5 block">
             {{ $help }}
         </small>
     @endif

@@ -209,7 +209,70 @@
                     </div>
                 </div>
             </div>
-            @endif
+
+            <!-- Period Filter Section - MOVED TO TOP FOR VISIBILITY -->
+            <div class="mb-6 bg-white rounded-lg shadow-md p-3 sm:p-4 border-l-4 border-blue-500 animate-slide-down">
+                <form method="GET" class="flex flex-col gap-3 sm:gap-4" aria-label="Filter periode penilaian">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <x-dashboard.form-select
+                            name="tahun_ajaran"
+                            id="tahun-select"
+                            label="Tahun Ajaran"
+                            title="Pilih tahun ajaran untuk memfilter data"
+                            ariaLabel="Pilih tahun ajaran"
+                            help="Pilih tahun ajaran untuk menampilkan data yang sesuai"
+                            :value="$currentTahunAjaran"
+                            :options="array_combine($availableTahunAjaran, $availableTahunAjaran)"
+                        />
+                        
+                        <x-dashboard.form-select
+                            name="semester"
+                            id="semester-select"
+                            label="Semester"
+                            title="Pilih semester (Ganjil atau Genap)"
+                            ariaLabel="Pilih semester"
+                            help="Pilih semester untuk memfilter data penilaian"
+                            :value="$currentSemester"
+                            :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
+                        />
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-end">
+                        <button 
+                            type="submit"
+                            title="Terapkan filter untuk menampilkan data sesuai pilihan tahun ajaran dan semester"
+                            aria-label="Terapkan filter"
+                            class="filter-submit-btn px-4 sm:px-6 py-2.5 sm:py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2 min-h-[44px] sm:min-h-auto"
+                        >
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 filter-icon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V19a1 1 0 01-1.447.894l-4-2A1 1 0 016 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="filter-text font-medium">Filter</span>
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 filter-spinner hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </button>
+                        
+                        <!-- Show current selection -->
+                        @if($currentTahunAjaran || $currentSemester)
+                            <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-600 overflow-x-auto">
+                                <span class="font-medium whitespace-nowrap">Menampilkan:</span>
+                                @if($currentTahunAjaran)
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded whitespace-nowrap">
+                                        {{ $currentTahunAjaran }}
+                                    </span>
+                                @endif
+                                @if($currentSemester)
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded whitespace-nowrap">
+                                        {{ $currentSemester }}
+                                    </span>
+                                @endif
+                            </div>
+                        @endif
+                    </div>
+                </form>
+            </div>
 
             <!-- Primary Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -349,71 +412,6 @@
                         </p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Period Filter Section - MAKE IT OBVIOUS -->
-            <div class="mb-6 bg-white rounded-lg shadow-md p-3 sm:p-4 border-l-4 border-blue-500 animate-slide-down">
-                <form method="GET" class="flex flex-col gap-3 sm:gap-4" aria-label="Filter periode penilaian">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                        <x-dashboard.form-select
-                            name="tahun_ajaran"
-                            id="tahun-select"
-                            label="Tahun Ajaran"
-                            title="Pilih tahun ajaran untuk memfilter data"
-                            ariaLabel="Pilih tahun ajaran"
-                            help="Pilih tahun ajaran untuk menampilkan data yang sesuai"
-                            :value="$currentTahunAjaran"
-                            :options="array_combine($availableTahunAjaran, $availableTahunAjaran)"
-                        />
-                        
-                        <x-dashboard.form-select
-                            name="semester"
-                            id="semester-select"
-                            label="Semester"
-                            title="Pilih semester (Ganjil atau Genap)"
-                            ariaLabel="Pilih semester"
-                            help="Pilih semester untuk memfilter data penilaian"
-                            :value="$currentSemester"
-                            :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
-                        />
-                    </div>
-                    
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-end">
-                        <x-dashboard.button
-                            type="submit"
-                            title="Terapkan filter untuk menampilkan data sesuai pilihan tahun ajaran dan semester"
-                            ariaLabel="Terapkan filter"
-                            class="filter-submit-btn"
-                        >
-                            <svg class="w-4 h-4 filter-icon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V19a1 1 0 01-1.447.894l-4-2A1 1 0 016 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
-                            </svg>
-                            <span class="filter-text">Filter</span>
-                            <svg class="w-4 h-4 filter-spinner hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Filter
-                        </x-dashboard.button>
-                        
-                        <!-- Show current selection -->
-                        @if($currentTahunAjaran || $currentSemester)
-                            <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-600 overflow-x-auto">
-                                <span class="font-medium whitespace-nowrap">Menampilkan:</span>
-                                @if($currentTahunAjaran)
-                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded whitespace-nowrap">
-                                        {{ $currentTahunAjaran }}
-                                    </span>
-                                @endif
-                                @if($currentSemester)
-                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded whitespace-nowrap">
-                                        {{ $currentSemester }}
-                                    </span>
-                                @endif
-                            </div>
-                        @endif
-                    </div>
-                </form>
             </div>
 
             <!-- Consolidated Stats - Only 3 Essential Cards -->
