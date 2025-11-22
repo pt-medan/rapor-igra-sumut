@@ -261,43 +261,36 @@
             <div class="mb-6 bg-white rounded-lg shadow-md p-3 sm:p-4 border-l-4 border-blue-500 animate-slide-down">
                 <form method="GET" class="flex flex-col gap-3 sm:gap-4" aria-label="Filter periode penilaian">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                        <div>
-                            <label for="tahun-select" class="block text-xs font-semibold text-gray-600 mb-1">Tahun Ajaran</label>
-                            <select id="tahun-select" name="tahun_ajaran" 
-                                    title="Pilih tahun ajaran untuk memfilter data"
-                                    aria-label="Pilih tahun ajaran"
-                                    aria-describedby="tahun-help"
-                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px]">
-                                <option value="">-- Pilih Tahun --</option>
-                                @foreach($availableTahunAjaran as $tahun)
-                                    <option value="{{ $tahun }}" {{ $tahun === $currentTahunAjaran ? 'selected' : '' }}>
-                                        {{ $tahun }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <small id="tahun-help" class="text-gray-500 text-xs mt-1 hidden">Pilih tahun ajaran untuk menampilkan data yang sesuai</small>
-                        </div>
+                        <x-dashboard.form-select
+                            name="tahun_ajaran"
+                            id="tahun-select"
+                            label="Tahun Ajaran"
+                            title="Pilih tahun ajaran untuk memfilter data"
+                            ariaLabel="Pilih tahun ajaran"
+                            help="Pilih tahun ajaran untuk menampilkan data yang sesuai"
+                            :value="$currentTahunAjaran"
+                            :options="array_combine($availableTahunAjaran, $availableTahunAjaran)"
+                        />
                         
-                        <div>
-                            <label for="semester-select" class="block text-xs font-semibold text-gray-600 mb-1">Semester</label>
-                            <select id="semester-select" name="semester" 
-                                    title="Pilih semester (Ganjil atau Genap)"
-                                    aria-label="Pilih semester"
-                                    aria-describedby="semester-help"
-                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px]">
-                                <option value="">-- Pilih Semester --</option>
-                                <option value="Ganjil" {{ 'Ganjil' === $currentSemester ? 'selected' : '' }}>Ganjil</option>
-                                <option value="Genap" {{ 'Genap' === $currentSemester ? 'selected' : '' }}>Genap</option>
-                            </select>
-                            <small id="semester-help" class="text-gray-500 text-xs mt-1 hidden">Pilih semester untuk memfilter data penilaian</small>
-                        </div>
+                        <x-dashboard.form-select
+                            name="semester"
+                            id="semester-select"
+                            label="Semester"
+                            title="Pilih semester (Ganjil atau Genap)"
+                            ariaLabel="Pilih semester"
+                            help="Pilih semester untuk memfilter data penilaian"
+                            :value="$currentSemester"
+                            :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
+                        />
                     </div>
                     
                     <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-end">
-                        <button type="submit" 
-                                title="Terapkan filter untuk menampilkan data sesuai pilihan tahun ajaran dan semester"
-                                aria-label="Terapkan filter"
-                                class="w-full sm:w-auto px-6 py-2 text-sm font-semibold whitespace-nowrap min-h-[44px] sm:min-h-auto bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition filter-submit-btn flex items-center justify-center gap-2">
+                        <x-dashboard.button
+                            type="submit"
+                            title="Terapkan filter untuk menampilkan data sesuai pilihan tahun ajaran dan semester"
+                            ariaLabel="Terapkan filter"
+                            class="filter-submit-btn"
+                        >
                             <svg class="w-4 h-4 filter-icon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V19a1 1 0 01-1.447.894l-4-2A1 1 0 016 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
                             </svg>
@@ -306,7 +299,8 @@
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
-                        </button>
+                            Filter
+                        </x-dashboard.button>
                         
                         <!-- Show current selection -->
                         @if($currentTahunAjaran || $currentSemester)
@@ -379,29 +373,23 @@
 
             <!-- Recent Activities -->
             @if($recentPenilaians->isNotEmpty())
-            <div class="mb-6 bg-white rounded-lg shadow-md overflow-hidden animate-fade-in-up" style="animation-delay: 0.2s;">
-                <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                        </svg>
-                        Aktivitas Terbaru
-                    </h3>
-                </div>
-                <div class="divide-y divide-gray-200 max-h-64 overflow-y-auto">
+            <x-dashboard.card
+                title="Aktivitas Terbaru"
+                icon="<path fill-rule='evenodd' d='M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z' clip-rule='evenodd' />"
+                animated
+                delay="0.2s"
+                class="mb-6"
+            >
+                <div class="max-h-64 overflow-y-auto">
                     @foreach($recentPenilaians->take(5) as $penilaian)
-                    <div class="px-6 py-3 hover:bg-gray-50 transition flex justify-between items-center">
-                        <div>
-                            <p class="text-sm font-semibold text-gray-900">{{ $penilaian->siswa->nama_lengkap }}</p>
-                            <p class="text-xs text-gray-500">{{ $penilaian->updated_at->format('d M Y H:i') }}</p>
-                        </div>
-                        <a href="{{ route('guru.penilaian.edit', $penilaian) }}" class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded hover:bg-blue-200 transition">
-                            Lihat
-                        </a>
-                    </div>
+                        <x-dashboard.activity-item
+                            :nama="$penilaian->siswa->nama_lengkap"
+                            :tanggal="$penilaian->updated_at->format('d M Y H:i')"
+                            :href="route('guru.penilaian.edit', $penilaian)"
+                        />
                     @endforeach
                 </div>
-            </div>
+            </x-dashboard.card>
             @endif
 
             <!-- Students List (Simplified) -->
@@ -507,19 +495,9 @@
                                         <td class="px-6 py-4 text-gray-600 text-sm">{{ $siswa->nisn ?? '-' }}</td>
                                         <td class="px-6 py-4 text-center">
                                             @if ($penilaian)
-                                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center justify-center gap-1 mx-auto w-fit" title="Siswa ini sudah dinilai" aria-label="Status: Dinilai">
-                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                                    </svg>
-                                                    Dinilai
-                                                </span>
+                                                <x-dashboard.status-badge status="completed" />
                                             @else
-                                                <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full flex items-center justify-center gap-1 mx-auto w-fit" title="Siswa ini belum dinilai, silakan buat rapor" aria-label="Status: Belum dinilai">
-                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.5a1 1 0 002 0V7zm0 7a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-                                                    </svg>
-                                                    Belum
-                                                </span>
+                                                <x-dashboard.status-badge status="pending" />
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 text-right">
@@ -539,30 +517,24 @@
                                 @empty
                                     <tr data-empty-state="true">
                                         <td colspan="5" class="px-6 py-12 text-center">
-                                            <div class="space-y-4">
-                                                <div>
-                                                    <p class="text-lg font-semibold text-gray-600">Belum ada siswa di kelas ini</p>
-                                                    <p class="text-sm text-gray-500 mt-1">Mulai dengan menambahkan siswa ke kelas Anda</p>
-                                                </div>
-                                                <div class="flex justify-center gap-3">
-                                                    <a href="{{ route('guru.siswa.create') }}" 
-                                                       class="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition text-sm flex items-center gap-2">
-                                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                                        </svg>
-                                                        Tambah Siswa Baru
-                                                    </a>
-                                                    @if(route('guru.siswa.import'))
-                                                        <a href="{{ route('guru.siswa.import') }}" 
-                                                           class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-sm flex items-center gap-2">
-                                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                                            </svg>
-                                                            Import dari File
-                                                        </a>
-                                                    @endif
-                                                </div>
-                                            </div>
+                                            <x-dashboard.empty-state
+                                                title="Belum ada siswa di kelas ini"
+                                                description="Mulai dengan menambahkan siswa ke kelas Anda"
+                                                :actions="[
+                                                    [
+                                                        'label' => 'Tambah Siswa Baru',
+                                                        'href' => route('guru.siswa.create'),
+                                                        'variant' => 'green',
+                                                        'icon' => '<path fill-rule=\"evenodd\" d=\"M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z\" clip-rule=\"evenodd\" />'
+                                                    ],
+                                                    route('guru.siswa.import') ? [
+                                                        'label' => 'Import dari File',
+                                                        'href' => route('guru.siswa.import'),
+                                                        'variant' => 'blue',
+                                                        'icon' => '<path fill-rule=\"evenodd\" d=\"M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z\" clip-rule=\"evenodd\" />'
+                                                    ] : null
+                                                ]"
+                                            />
                                         </td>
                                     </tr>
                                 @endforelse
