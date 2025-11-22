@@ -209,6 +209,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <!-- Period Filter Section - MOVED TO TOP FOR VISIBILITY -->
             <div class="mb-6 bg-white rounded-lg shadow-md p-3 sm:p-4 border-l-4 border-blue-500 animate-slide-down">
