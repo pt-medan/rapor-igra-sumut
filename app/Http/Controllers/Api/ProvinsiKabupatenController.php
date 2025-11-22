@@ -37,13 +37,13 @@ class ProvinsiKabupatenController
     public function searchSekolah(Request $request): JsonResponse
     {
         $query = $request->get('q', '');
-        
+
         $sekolahs = Sekolah::query();
-        
+
         if (!empty($query)) {
             $sekolahs = $sekolahs->where('nama_sekolah', 'LIKE', '%' . $query . '%');
         }
-        
+
         $results = $sekolahs->select('id', 'nama_sekolah')
             ->limit(10)
             ->get()

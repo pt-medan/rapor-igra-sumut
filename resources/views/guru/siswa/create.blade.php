@@ -5,6 +5,9 @@
         </h2>
     </x-slot>
 
+    <script src="{{ asset('js/toast.js') }}"></script>
+    <script src="{{ asset('js/form-persistence.js') }}"></script>
+
     <div class="py-8 sm:py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Toast Notification Container -->
@@ -226,6 +229,14 @@
     </div>
 
     <script>
+        // Initialize Form Persistence
+        document.addEventListener('DOMContentLoaded', function() {
+            FormPersistence.init('siswa-form', {
+                storageKey: 'siswa_create_form_data',
+                autoSaveDelay: 500
+            });
+        });
+
         // Toast notification function
         function showToast(message, type = 'info') {
             const toastContainer = document.getElementById('toast-container');

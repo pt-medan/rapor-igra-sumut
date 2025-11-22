@@ -5,11 +5,14 @@
         </h2>
     </x-slot>
 
+    <script src="{{ asset('js/toast.js') }}"></script>
+    <script src="{{ asset('js/form-persistence.js') }}"></script>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form method="POST" action="{{ route('guru.siswa.update', $siswa) }}">
+                    <form id="siswa-form" method="POST" action="{{ route('guru.siswa.update', $siswa) }}">
                         @csrf
                         @method('PATCH')
 
@@ -114,4 +117,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Initialize Form Persistence
+        document.addEventListener('DOMContentLoaded', function() {
+            FormPersistence.init('siswa-form', {
+                storageKey: 'siswa_edit_form_data',
+                autoSaveDelay: 500
+            });
+        });
+    </script>
 </x-app-layout>

@@ -2,6 +2,10 @@
     {{-- Include Choices.js CSS for searchable dropdowns --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     
+    {{-- Include Toast and FormPersistence Scripts --}}
+    <script src="{{ asset('js/toast.js') }}"></script>
+    <script src="{{ asset('js/form-persistence.js') }}"></script>
+    
     <form method="POST" action="{{ route('register') }}" id="registerForm">
         @csrf
 
@@ -78,7 +82,9 @@
 
                 <!-- NPSN -->
                 <div>
-                    <label class="inline-flex font-medium text-sm text-gray-700">NPSN</label>
+                    <label class="inline-flex font-medium text-sm text-gray-700">
+                        <span class="text-red-500">*</span> NPSN
+                    </label>
                     <x-text-input id="npsn" class="block mt-1 w-full" type="text" name="npsn" :value="old('npsn')" />
                     <x-input-error :messages="$errors->get('npsn')" class="mt-2" />
                 </div>
@@ -170,7 +176,18 @@
                 <label class="inline-flex font-medium text-sm text-gray-700">
                     <span class="text-red-500">*</span> Kata Sandi
                 </label>
-                <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                <div class="relative">
+                    <x-text-input id="password" class="block mt-1 w-full pr-10" type="password" name="password" required autocomplete="new-password" />
+                    <button type="button" class="password-toggle absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700" data-target="password">
+                        <svg class="eye-closed w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        <svg class="eye-open w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-4.803m5.596-3.856a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM19.5 13.5a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"></path>
+                        </svg>
+                    </button>
+                </div>
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 <p class="text-xs text-gray-500 mt-1">Minimal 8 karakter, harus mengandung huruf besar, huruf kecil, angka, dan simbol.</p>
             </div>
@@ -180,7 +197,18 @@
                 <label class="inline-flex font-medium text-sm text-gray-700">
                     <span class="text-red-500">*</span> Konfirmasi Kata Sandi
                 </label>
-                <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+                <div class="relative">
+                    <x-text-input id="password_confirmation" class="block mt-1 w-full pr-10" type="password" name="password_confirmation" required autocomplete="new-password" />
+                    <button type="button" class="password-toggle absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700" data-target="password_confirmation">
+                        <svg class="eye-closed w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        <svg class="eye-open w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-4.803m5.596-3.856a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM19.5 13.5a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"></path>
+                        </svg>
+                    </button>
+                </div>
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
         </div>
@@ -201,6 +229,12 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Form Persistence
+            FormPersistence.init('registerForm', {
+                storageKey: 'register_form_data',
+                autoSaveDelay: 500
+            });
+
             // Element selectors
             const roleSelect = document.getElementById('role');
             const guruFields = document.getElementById('guru_fields');
@@ -492,6 +526,27 @@
                     e.preventDefault();
                     alert('Mohon lengkapi formulir:\n\n' + errors.join('\n'));
                 }
+            });
+
+            // Password Toggle Event Listeners
+            document.querySelectorAll('.password-toggle').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const fieldId = this.getAttribute('data-target');
+                    const inputField = document.getElementById(fieldId);
+                    const eyeClosed = this.querySelector('.eye-closed');
+                    const eyeOpen = this.querySelector('.eye-open');
+
+                    if (inputField.type === 'password') {
+                        inputField.type = 'text';
+                        eyeClosed.classList.add('hidden');
+                        eyeOpen.classList.remove('hidden');
+                    } else {
+                        inputField.type = 'password';
+                        eyeClosed.classList.remove('hidden');
+                        eyeOpen.classList.add('hidden');
+                    }
+                });
             });
 
             // Event Listeners
