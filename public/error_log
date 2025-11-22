@@ -1,0 +1,90 @@
+[11-Nov-2025 20:08:12 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:13 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:19 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:22 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:22 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:23 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:23 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:24 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:24 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:25 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:25 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:55 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:55 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:58 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:08:58 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:09:01 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:09:01 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:09:04 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:09:04 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:09:06 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:09:06 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:09:07 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:09:07 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:09:10 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:09:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:10:50 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:10:50 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:10:51 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:10:51 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:10:52 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:10:52 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:10:52 UTC] PHP Warning:  require(/home/igrasumu/public_html/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/igrasumu/public_html/public/index.php on line 14
+[11-Nov-2025 20:10:52 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/igrasumu/public_html/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/igrasumu/public_html/public/index.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/igrasumu/public_html/public/index.php on line 14

@@ -1,0 +1,19 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - app
+        - config
+        - database
+        - routes
+        - bootstrap/app.php
+
+    ignoreErrors:
+        # Blade template analysis - IDE can't determine view variables
+        - '#Undefined property.*\$guru#'
+        - '#Undefined property.*MustVerifyEmail#'
+
+    larastan:
+        collects_data: false
