@@ -14,7 +14,7 @@ class FaviconHelper
     public static function getFaviconTag()
     {
         $favicon = WebsiteSetting::getSetting('app_favicon');
-        
+
         if (!$favicon) {
             return '<link rel="icon" href="' . asset('favicon.svg') . '" type="image/svg+xml">';
         }
@@ -33,7 +33,7 @@ class FaviconHelper
     {
         $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        return match($ext) {
+        return match ($ext) {
             'svg' => 'image/svg+xml',
             'ico' => 'image/x-icon',
             'png' => 'image/png',
@@ -52,7 +52,7 @@ class FaviconHelper
     public static function getFaviconUrl()
     {
         $favicon = WebsiteSetting::getSetting('app_favicon');
-        
+
         if (!$favicon) {
             return asset('favicon.svg');
         }
