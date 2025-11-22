@@ -27,7 +27,7 @@ class GuruController extends Controller
         $sekolah = Auth::user()->sekolah;
 
         // Get all available academic years for the filter dropdown
-        $availableTahunAjaran = Penilaian::select('tahun_ajaran')->distinct()->orderBy('tahun_ajaran', 'desc')->pluck('tahun_ajaran');
+        $availableTahunAjaran = Penilaian::select('tahun_ajaran')->distinct()->orderBy('tahun_ajaran', 'desc')->pluck('tahun_ajaran')->toArray();
 
         // Determine the default academic period by querying the raw semester value
         $latestPenilaian = Penilaian::orderBy('tahun_ajaran', 'desc')
