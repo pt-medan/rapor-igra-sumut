@@ -83,6 +83,11 @@ Route::middleware(['auth', 'role:guru', 'guru.verified'])->prefix('guru')->name(
     Route::get('penilaian/{penilaian}/print', [App\Http\Controllers\PenilaianController::class, 'print'])->name('penilaian.print');
     Route::get('export/kelompok-kelas/{kelompok_kelas}/pdf', [App\Http\Controllers\ExportController::class, 'bulkPrintRapor'])->name('export.rapor.kelas');
     Route::post('export/rapor/massal', [App\Http\Controllers\ExportController::class, 'bulkExportRapor'])->name('export.rapor.massal');
+    // Bulk export routes
+    Route::post('bulk/export/csv', [App\Http\Controllers\ExportController::class, 'bulkExportCsv'])->name('bulk.export.csv');
+    Route::post('bulk/export/pdf', [App\Http\Controllers\ExportController::class, 'bulkExportPdf'])->name('bulk.export.pdf');
+    Route::post('bulk/export/excel', [App\Http\Controllers\ExportController::class, 'bulkExportExcel'])->name('bulk.export.excel');
+    Route::post('bulk/update/status', [App\Http\Controllers\ExportController::class, 'bulkUpdateStatus'])->name('bulk.update.status');
     Route::resource('siswa.penilaian', App\Http\Controllers\PenilaianController::class)->shallow()->except(['show']);
     Route::get('sekolah/edit', [App\Http\Controllers\GuruController::class, 'editSekolah'])->name('sekolah.edit');
     Route::patch('sekolah', [App\Http\Controllers\GuruController::class, 'updateSekolah'])->name('sekolah.update');

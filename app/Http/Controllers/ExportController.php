@@ -103,4 +103,157 @@ class ExportController extends Controller
 
         return $pdf->stream($fileName);
     }
+
+    /**
+     * Bulk export selected students to CSV format
+     */
+    public function bulkExportCsv(Request $request)
+    {
+        $request->validate([
+            'penilaian_ids' => 'required|array',
+            'penilaian_ids.*' => 'exists:penilaians,id',
+        ]);
+
+        $user = Auth::user();
+        $query = Penilaian::whereIn('id', $request->penilaian_ids);
+
+        // Check authorization for guru
+        if ($user && $user->role === 'guru') {
+            $guruKelasIds = $user->guru?->kelompokKelas?->pluck('id')->toArray() ?? [];
+            $query->whereHas('siswa', function ($q) use ($guruKelasIds) {
+                $q->whereIn('kelompok_kelas_id', $guruKelasIds);
+            });
+        }
+
+        $penilaians = $query->with('siswa')->get();
+
+        if ($penilaians->isEmpty()) {
+            return back()->with('error', 'Tidak ada data untuk diexport.');
+        }
+
+        // Generate CSV
+        $fileName = 'export_siswa_' . date('Ymd_His') . '.csv';
+        $headers = [
+            'Content-Type' => 'text/csv; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"$fileName\"",
+        ];
+
+        $callback = function () use ($penilaians) {
+            $file = fopen('php://output', 'w');
+            
+            // BOM for Excel to recognize UTF-8
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            
+            // Header
+            fputcsv($file, ['NISN', 'Nama Siswa', 'Kelas', 'Tahun Ajaran', 'Semester', 'Status', 'Terakhir Diupdate']);
+
+            // Data
+            foreach ($penilaians as $penilaian) {
+                fputcsv($file, [
+                    $penilaian->siswa->nisn ?? '-',
+                    $penilaian->siswa->nama_lengkap,
+                    $penilaian->siswa->kelompokKelas?->nama_kelas ?? '-',
+                    $penilaian->tahun_ajaran,
+                    $penilaian->semester === '1' ? 'Ganjil' : 'Genap',
+                    'Dinilai',
+                    $penilaian->updated_at->format('d-m-Y H:i'),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Bulk export selected students to PDF format
+     */
+    public function bulkExportPdf(Request $request)
+    {
+        $request->validate([
+            'penilaian_ids' => 'required|array',
+            'penilaian_ids.*' => 'exists:penilaians,id',
+        ]);
+
+        $user = Auth::user();
+        $query = Penilaian::whereIn('id', $request->penilaian_ids);
+
+        // Check authorization for guru
+        if ($user && $user->role === 'guru') {
+            $guruKelasIds = $user->guru?->kelompokKelas?->pluck('id')->toArray() ?? [];
+            $query->whereHas('siswa', function ($q) use ($guruKelasIds) {
+                $q->whereIn('kelompok_kelas_id', $guruKelasIds);
+            });
+        }
+
+        $penilaians = $query->with(['siswa', 'siswa.kelompokKelas', 'siswa.sekolah'])->get();
+
+        if ($penilaians->isEmpty()) {
+            return back()->with('error', 'Tidak ada data untuk diexport.');
+        }
+
+        $pdf = Pdf::loadView('exports.bulk-export-pdf', [
+            'penilaians' => $penilaians,
+            'sekolah' => $penilaians->first()->siswa->sekolah ?? null,
+            'exportDate' => date('d-m-Y H:i:s'),
+        ]);
+
+        $fileName = 'export_siswa_' . date('Ymd_His') . '.pdf';
+        return $pdf->stream($fileName);
+    }
+
+    /**
+     * Bulk export selected students to Excel format
+     */
+    public function bulkExportExcel(Request $request)
+    {
+        $request->validate([
+            'penilaian_ids' => 'required|array',
+            'penilaian_ids.*' => 'exists:penilaians,id',
+        ]);
+
+        $user = Auth::user();
+        $query = Penilaian::whereIn('id', $request->penilaian_ids);
+
+        // Check authorization for guru
+        if ($user && $user->role === 'guru') {
+            $guruKelasIds = $user->guru?->kelompokKelas?->pluck('id')->toArray() ?? [];
+            $query->whereHas('siswa', function ($q) use ($guruKelasIds) {
+                $q->whereIn('kelompok_kelas_id', $guruKelasIds);
+            });
+        }
+
+        $penilaians = $query->with('siswa')->get();
+
+        if ($penilaians->isEmpty()) {
+            return back()->with('error', 'Tidak ada data untuk diexport.');
+        }
+
+        // Generate Excel using simple approach
+        $fileName = 'export_siswa_' . date('Ymd_His') . '.xlsx';
+        
+        // Convert to SiswaExport format
+        $data = $penilaians->map(function ($penilaian) {
+            return [
+                'NISN' => $penilaian->siswa->nisn ?? '-',
+                'Nama Siswa' => $penilaian->siswa->nama_lengkap,
+                'Kelas' => $penilaian->siswa->kelompokKelas?->nama_kelas ?? '-',
+                'Email' => $penilaian->siswa->user?->email ?? '-',
+                'Tahun Ajaran' => $penilaian->tahun_ajaran,
+                'Semester' => $penilaian->semester === '1' ? 'Ganjil' : 'Genap',
+                'Status' => 'Dinilai',
+                'Terakhir Diupdate' => $penilaian->updated_at->format('d-m-Y H:i'),
+            ];
+        });
+
+        // Use SiswaExport if available, otherwise create custom export
+        try {
+            $export = new \App\Exports\SiswaExport($data);
+            return \Maatwebsite\Excel\Facades\Excel::download($export, $fileName);
+        } catch (\Exception $e) {
+            // Fallback: Return CSV if Excel export fails
+            return $this->bulkExportCsv($request);
+        }
+    }
 }
