@@ -187,8 +187,15 @@
                         </select>
                     </div>
                     
-                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition whitespace-nowrap">
-                        Filter
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition whitespace-nowrap filter-submit-btn flex items-center gap-2">
+                        <svg class="w-4 h-4 filter-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V19a1 1 0 01-1.447.894l-4-2A1 1 0 016 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="filter-text">Filter</span>
+                        <svg class="w-4 h-4 filter-spinner hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
                     </button>
                     
                     <!-- Show current selection -->
@@ -301,11 +308,15 @@
                         </div>
                         <div class="flex gap-2">
                             @if($penilaians->isNotEmpty())
-                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition flex items-center gap-2 download-submit-btn">
+                                    <svg class="w-4 h-4 download-icon" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                     </svg>
-                                    Download Massal
+                                    <span class="download-text">Download Massal</span>
+                                    <svg class="w-4 h-4 download-spinner hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
                                 </button>
                                 <a href="{{ route('guru.export.rapor.kelas', ['kelompok_kelas' => $kelas, 'tahun_ajaran' => $currentTahunAjaran, 'semester' => $currentSemester]) }}" target="_blank" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition flex items-center gap-2">
                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -509,6 +520,51 @@
                         filterStudents();
                         searchInput.focus();
                     });
+                }
+
+                // Button loading states functionality
+                function setupLoadingState(button, textElement, iconElement, spinnerElement) {
+                    const form = button.closest('form');
+                    
+                    if (form) {
+                        form.addEventListener('submit', function() {
+                            button.disabled = true;
+                            textElement.classList.add('hidden');
+                            iconElement.classList.add('hidden');
+                            spinnerElement.classList.remove('hidden');
+                            
+                            // Fallback timeout (5 seconds) to re-enable button
+                            const timeout = setTimeout(function() {
+                                button.disabled = false;
+                                textElement.classList.remove('hidden');
+                                iconElement.classList.remove('hidden');
+                                spinnerElement.classList.add('hidden');
+                            }, 5000);
+                            
+                            // Clear timeout if form completes normally
+                            form.addEventListener('success', function() {
+                                clearTimeout(timeout);
+                            });
+                        });
+                    }
+                }
+
+                // Initialize loading states for Filter button
+                const filterBtn = document.querySelector('.filter-submit-btn');
+                if (filterBtn) {
+                    const filterText = filterBtn.querySelector('.filter-text');
+                    const filterIcon = filterBtn.querySelector('.filter-icon');
+                    const filterSpinner = filterBtn.querySelector('.filter-spinner');
+                    setupLoadingState(filterBtn, filterText, filterIcon, filterSpinner);
+                }
+
+                // Initialize loading states for Download button
+                const downloadBtn = document.querySelector('.download-submit-btn');
+                if (downloadBtn) {
+                    const downloadText = downloadBtn.querySelector('.download-text');
+                    const downloadIcon = downloadBtn.querySelector('.download-icon');
+                    const downloadSpinner = downloadBtn.querySelector('.download-spinner');
+                    setupLoadingState(downloadBtn, downloadText, downloadIcon, downloadSpinner);
                 }
             </script>
 
