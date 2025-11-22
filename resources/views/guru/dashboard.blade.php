@@ -1,4 +1,88 @@
 <x-app-layout>
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .animate-slide-down {
+            animation: slideDown 0.4s ease-out;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        /* Card hover scale effect */
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Smooth button transitions */
+        button, a {
+            transition: all 0.2s ease;
+        }
+
+        /* Pulse animation for attention-needed alert */
+        @keyframes pulse-subtle {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        .animate-pulse-subtle {
+            animation: pulse-subtle 3s ease-in-out infinite;
+        }
+
+        /* Smooth row transitions */
+        tbody tr {
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+        }
+
+        /* Fade out effect for hidden rows */
+        tbody tr[style*="display: none"] {
+            opacity: 0;
+        }
+    </style>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard Guru') }}
@@ -8,7 +92,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Welcome Card with Primary CTA -->
-            <div class="mb-6 bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-lg shadow-lg p-4 sm:p-6 text-white">
+            <div class="mb-6 bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-lg shadow-lg p-4 sm:p-6 text-white animate-fade-in-up">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                     <!-- Left: Greeting -->
                     <div class="md:col-span-2">
@@ -35,7 +119,7 @@
                 <!-- Primary CTA Section -->
                 <div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-white border-opacity-20">
                     @if($jumlahBelumDinilai > 0)
-                    <div class="mb-3 sm:mb-4 bg-yellow-200 bg-opacity-20 rounded-lg p-2 sm:p-3 border border-yellow-300 border-opacity-30">
+                    <div class="mb-3 sm:mb-4 bg-yellow-200 bg-opacity-20 rounded-lg p-2 sm:p-3 border border-yellow-300 border-opacity-30 animate-pulse-subtle">
                         <p class="text-yellow-100 font-semibold text-xs sm:text-sm flex items-center gap-2">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -168,7 +252,7 @@
             </div>
 
             <!-- Period Filter Section - MAKE IT OBVIOUS -->
-            <div class="mb-6 bg-white rounded-lg shadow-md p-3 sm:p-4 border-l-4 border-blue-500">
+            <div class="mb-6 bg-white rounded-lg shadow-md p-3 sm:p-4 border-l-4 border-blue-500 animate-slide-down">
                 <form method="GET" class="flex flex-col gap-3 sm:gap-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div>
@@ -228,7 +312,7 @@
             <!-- Consolidated Stats - Only 3 Essential Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6">
                 <!-- Card 1: Belum Dinilai (PRIORITY) -->
-                <div class="bg-white rounded-lg shadow-md border-l-4 border-yellow-500 p-4 sm:p-6 hover:shadow-lg transition">
+                <div class="bg-white rounded-lg shadow-md border-l-4 border-yellow-500 p-4 sm:p-6 hover:shadow-lg transition card-hover animate-fade-in-up" style="animation-delay: 0.05s;">
                     <div class="flex items-start sm:items-center justify-between gap-3">
                         <div class="min-w-0">
                             <p class="text-gray-600 text-xs sm:text-sm font-medium">Belum Dinilai</p>
@@ -243,7 +327,7 @@
 
                 <!-- Card 2: Quota (if applicable) -->
                 @if(Auth::user()->guru && Auth::user()->guru->student_quota > 0)
-                <div class="bg-white rounded-lg shadow-md border-l-4 border-purple-500 p-6 hover:shadow-lg transition">
+                <div class="bg-white rounded-lg shadow-md border-l-4 border-purple-500 p-4 sm:p-6 hover:shadow-lg transition card-hover animate-fade-in-up" style="animation-delay: 0.1s;">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-600 text-sm font-medium">Kuota Siswa</p>
@@ -261,7 +345,7 @@
                 @endif
 
                 <!-- Card 3: Periode -->
-                <div class="bg-white rounded-lg shadow-md border-l-4 border-gray-500 p-6">
+                <div class="bg-white rounded-lg shadow-md border-l-4 border-gray-500 p-4 sm:p-6 card-hover animate-fade-in-up" style="animation-delay: 0.15s;">
                     <div>
                         <p class="text-gray-600 text-sm font-medium">Periode Aktif</p>
                         <p class="text-2xl font-bold text-gray-900 mt-2">
@@ -276,7 +360,7 @@
 
             <!-- Recent Activities -->
             @if($recentPenilaians->isNotEmpty())
-            <div class="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="mb-6 bg-white rounded-lg shadow-md overflow-hidden animate-fade-in-up" style="animation-delay: 0.2s;">
                 <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -304,7 +388,7 @@
             <!-- Students List (Simplified) -->
             <form action="{{ route('guru.export.rapor.massal') }}" method="POST" id="bulk-export-form">
                 @csrf
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden animate-fade-in-up" style="animation-delay: 0.25s;">
                     <div class="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center" id="siswa-list">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
