@@ -37,6 +37,11 @@ Route::get('/api/sekolah/search', [App\Http\Controllers\Api\ProvinsiKabupatenCon
 Route::get('/api/provinsi', [App\Http\Controllers\Api\ProvinsiKabupatenController::class, 'getProvinsi'])->name('api.provinsi');
 Route::get('/api/provinsi/{provinsiId}/kabupaten', [App\Http\Controllers\Api\ProvinsiKabupatenController::class, 'getKabupaten'])->name('api.kabupaten');
 
+// Session Heartbeat - Keep session alive during browsing
+Route::post('/api/heartbeat', function (\Illuminate\Http\Request $request) {
+    return response()->json(['status' => 'ok', 'timestamp' => now()]);
+})->middleware('auth')->name('api.heartbeat');
+
 // Admin Provinsi Routes
 Route::middleware(['auth', 'role:admin_provinsi'])->prefix('admin/provinsi')->name('admin.provinsi.')->group(function () {
     Route::get('dashboard', [App\Http\Controllers\AdminProvinsiController::class, 'dashboard'])->name('dashboard');

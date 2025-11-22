@@ -38,5 +38,8 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <!-- Session Keepalive Script -->
+        <script src="{{ asset('js/session-keepalive.js') }}"></script>
     </body>
 </html>

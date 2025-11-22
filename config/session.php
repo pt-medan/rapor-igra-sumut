@@ -112,9 +112,12 @@ return [
     | rid of old sessions from storage. Here are the chances that it will
     | happen on a given request. By default, the odds are 2 out of 100.
     |
+    | Increased to [10, 100] (10%) for better session cleanup frequency
+    | to prevent expired sessions accumulating in database
+    |
     */
 
-    'lottery' => [2, 100],
+    'lottery' => [10, 100],
 
     /*
     |--------------------------------------------------------------------------
