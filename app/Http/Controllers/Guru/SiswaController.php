@@ -56,15 +56,15 @@ class SiswaController extends Controller
 
         // Get per_page from request, default to 20
         $perPage = $request->input('per_page', 20);
-        
+
         // Validate per_page value
         if (!in_array($perPage, [20, 50, 100])) {
             $perPage = 20;
         }
 
         // Eager load the 'penilaians' relationship with pagination
-        $siswas = $kelas 
-            ? $kelas->siswas()->with(['penilaians', 'user'])->paginate($perPage)->withQueryString()
+        $siswas = $kelas
+            ? $kelas->siswas()->with('penilaians')->paginate($perPage)->withQueryString()
             : new \Illuminate\Pagination\LengthAwarePaginator([], 0, $perPage);
 
         return view('guru.siswa.index', compact('siswas', 'kelas'));

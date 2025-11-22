@@ -228,7 +228,7 @@
                                             NISN
                                         </th>
                                         <th scope="col" class="hidden md:table-cell px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                            Email
+                                            Tempat Lahir
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                             Status Rapor
@@ -266,7 +266,7 @@
                                                 {{ $siswa->nisn ?? '-' }}
                                             </td>
                                             <td class="hidden md:table-cell px-6 py-4 text-sm text-gray-600">
-                                                {{ $siswa->user->email ?? '-' }}
+                                                {{ $siswa->tempat_lahir ?? '-' }}
                                             </td>
                                             <td class="px-6 py-4 text-center">
                                                 @if($hasRapor)
