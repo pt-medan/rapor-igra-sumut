@@ -46,12 +46,12 @@ class SiswaController extends Controller
         $user = Auth::user()->fresh()->load(['guru.kelompokKelas']);
 
         $guru = $user->guru;
-        
+
         // Validate that user has a guru profile
         if (!$guru) {
             return redirect()->route('guru.dashboard')->with('error', 'Anda tidak terdaftar sebagai guru. Hubungi admin untuk mendaftarkan akun guru Anda.');
         }
-        
+
         $kelas = $guru ? $guru->kelompokKelas : null;
 
         // Eager load the 'penilaians' relationship
@@ -69,12 +69,12 @@ class SiswaController extends Controller
         $user = Auth::user()->fresh()->load(['guru.kelompokKelas']);
 
         $guru = $user->guru;
-        
+
         // Validate that user has a guru profile
         if (!$guru) {
             return redirect()->route('guru.dashboard')->with('error', 'Anda tidak terdaftar sebagai guru. Hubungi admin untuk mendaftarkan akun guru Anda.');
         }
-        
+
         $kelompokKelas = $guru && $guru->kelompokKelas ? [$guru->kelompokKelas] : [];
 
         if (empty($kelompokKelas)) {
@@ -135,7 +135,7 @@ class SiswaController extends Controller
         $user = Auth::user()->fresh()->load(['guru.kelompokKelas']);
 
         $guru = $user->guru;
-        
+
         // Validate that user has a guru profile
         if (!$guru) {
             return response()->json([
@@ -143,7 +143,7 @@ class SiswaController extends Controller
                 'message' => 'Anda tidak terdaftar sebagai guru. Hubungi admin untuk mendaftarkan akun guru Anda.',
             ], 403);
         }
-        
+
         $kelompokKelas = $guru ? $guru->kelompokKelas : null;
 
         if (!$kelompokKelas) {
@@ -243,13 +243,13 @@ class SiswaController extends Controller
     public function destroy(Siswa $siswa)
     {
         $this->authorizeSiswa($siswa);
-        
+
         // Decrement student count from guru's quota
         $user = Auth::user();
         if ($user->guru) {
             $user->guru->decrement('student_count');
         }
-        
+
         $siswa->delete();
         return redirect()->route('guru.siswa.index')->with('success', 'Siswa berhasil dihapus.');
     }
