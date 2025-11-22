@@ -8,12 +8,12 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Welcome Card with Primary CTA -->
-            <div class="mb-6 bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-lg shadow-lg p-6 text-white">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="mb-6 bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-lg shadow-lg p-4 sm:p-6 text-white">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                     <!-- Left: Greeting -->
                     <div class="md:col-span-2">
-                        <h1 class="text-3xl font-bold">Selamat Datang, {{ Auth::user()->name }}!</h1>
-                        <p class="mt-2 text-indigo-100">
+                        <h1 class="text-2xl sm:text-3xl font-bold">Selamat Datang, {{ Auth::user()->name }}!</h1>
+                        <p class="mt-2 text-sm sm:text-base text-indigo-100">
                             <strong>{{ $kelas->nama_kelompok }}</strong> • 
                             <strong>{{ $sekolah->nama_sekolah }}</strong>
                         </p>
@@ -21,54 +21,58 @@
                     
                     <!-- Right: Quick Stats -->
                     <div class="grid grid-cols-2 gap-2">
-                        <div class="bg-white bg-opacity-10 rounded-lg p-3">
+                        <div class="bg-white bg-opacity-10 rounded-lg p-2 sm:p-3">
                             <p class="text-xs text-indigo-100">Total Siswa</p>
-                            <p class="text-2xl font-bold">{{ $jumlahSiswa }}</p>
+                            <p class="text-xl sm:text-2xl font-bold">{{ $jumlahSiswa }}</p>
                         </div>
-                        <div class="bg-white bg-opacity-10 rounded-lg p-3">
+                        <div class="bg-white bg-opacity-10 rounded-lg p-2 sm:p-3">
                             <p class="text-xs text-indigo-100">Progress</p>
-                            <p class="text-2xl font-bold">{{ $persentaseDinilai }}%</p>
+                            <p class="text-xl sm:text-2xl font-bold">{{ $persentaseDinilai }}%</p>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Primary CTA Section -->
-                <div class="mt-6 pt-6 border-t border-white border-opacity-20">
+                <div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-white border-opacity-20">
                     @if($jumlahBelumDinilai > 0)
-                    <div class="mb-4 bg-yellow-200 bg-opacity-20 rounded-lg p-3 border border-yellow-300 border-opacity-30">
-                        <p class="text-yellow-100 font-semibold text-sm flex items-center gap-2">
-                            <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="mb-3 sm:mb-4 bg-yellow-200 bg-opacity-20 rounded-lg p-2 sm:p-3 border border-yellow-300 border-opacity-30">
+                        <p class="text-yellow-100 font-semibold text-xs sm:text-sm flex items-center gap-2">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
                             </svg>
-                            Attention needed: <strong>{{ $jumlahBelumDinilai }}</strong> student{{ $jumlahBelumDinilai > 1 ? 's' : '' }} 
-                            still awaiting rating
+                            <span>
+                                Attention needed: <strong>{{ $jumlahBelumDinilai }}</strong> student{{ $jumlahBelumDinilai > 1 ? 's' : '' }} 
+                                still awaiting rating
+                            </span>
                         </p>
                     </div>
                     @endif
                     
-                    <div class="flex flex-col md:flex-row gap-3">
+                    <div class="flex flex-col gap-2 sm:gap-3">
                         @if($jumlahBelumDinilai > 0)
                             <a href="{{ route('guru.rapor.index') }}" 
-                               class="flex-1 px-6 py-3 bg-white text-indigo-600 rounded-lg font-semibold hover:bg-opacity-90 transition text-center flex items-center justify-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                               class="w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-white text-indigo-600 rounded-lg font-semibold hover:bg-opacity-90 transition text-center flex items-center justify-center gap-2 text-sm sm:text-base min-h-[44px] sm:min-h-auto">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
-                                Input Rapor ({{ $jumlahBelumDinilai }} siswa)
+                                <span class="truncate">Input Rapor ({{ $jumlahBelumDinilai }})</span>
                             </a>
                         @endif
                         <a href="{{ route('guru.siswa.index') }}" 
-                           class="flex-1 px-6 py-3 bg-white bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition text-center flex items-center justify-center gap-2 border border-white">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                           class="w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-white bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition text-center flex items-center justify-center gap-2 border border-white text-sm sm:text-base min-h-[44px] sm:min-h-auto">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 11a6 6 0 00-5.86 0m.001-.02a.768.768 0 00-.140.54V14a6 6 0 006 6 6 6 0 006-6v-2.46a.768.768 0 00-.14-.54 6 6 0 00-5.86 0z" />
                             </svg>
-                            Kelola Siswa
+                            <span class="hidden sm:inline">Kelola Siswa</span>
+                            <span class="sm:hidden">Kelola</span>
                         </a>
                         <a href="{{ route('guru.siswa.create') }}" 
-                           class="flex-1 px-6 py-3 bg-white bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition text-center flex items-center justify-center gap-2 border border-white">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                           class="w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-white bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition text-center flex items-center justify-center gap-2 border border-white text-sm sm:text-base min-h-[44px] sm:min-h-auto">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
-                            Tambah Siswa
+                            <span class="hidden sm:inline">Tambah Siswa</span>
+                            <span class="sm:hidden">Tambah</span>
                         </a>
                     </div>
                 </div>
@@ -164,70 +168,74 @@
             </div>
 
             <!-- Period Filter Section - MAKE IT OBVIOUS -->
-            <div class="mb-6 bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
-                <form method="GET" class="flex flex-col md:flex-row gap-4 items-end">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Tahun Ajaran</label>
-                        <select name="tahun_ajaran" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-                            <option value="">-- Pilih Tahun --</option>
-                            @foreach($availableTahunAjaran as $tahun)
-                                <option value="{{ $tahun }}" {{ $tahun === $currentTahunAjaran ? 'selected' : '' }}>
-                                    {{ $tahun }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Semester</label>
-                        <select name="semester" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-                            <option value="">-- Pilih Semester --</option>
-                            <option value="Ganjil" {{ 'Ganjil' === $currentSemester ? 'selected' : '' }}>Ganjil</option>
-                            <option value="Genap" {{ 'Genap' === $currentSemester ? 'selected' : '' }}>Genap</option>
-                        </select>
-                    </div>
-                    
-                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition whitespace-nowrap filter-submit-btn flex items-center gap-2">
-                        <svg class="w-4 h-4 filter-icon" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V19a1 1 0 01-1.447.894l-4-2A1 1 0 016 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
-                        </svg>
-                        <span class="filter-text">Filter</span>
-                        <svg class="w-4 h-4 filter-spinner hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                    </button>
-                    
-                    <!-- Show current selection -->
-                    @if($currentTahunAjaran || $currentSemester)
-                        <div class="flex items-center gap-2 ml-auto">
-                            <span class="text-sm text-gray-600">Menampilkan:</span>
-                            @if($currentTahunAjaran)
-                                <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                                    {{ $currentTahunAjaran }}
-                                </span>
-                            @endif
-                            @if($currentSemester)
-                                <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                                    {{ $currentSemester }}
-                                </span>
-                            @endif
+            <div class="mb-6 bg-white rounded-lg shadow-md p-3 sm:p-4 border-l-4 border-blue-500">
+                <form method="GET" class="flex flex-col gap-3 sm:gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Tahun Ajaran</label>
+                            <select name="tahun_ajaran" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px]">
+                                <option value="">-- Pilih Tahun --</option>
+                                @foreach($availableTahunAjaran as $tahun)
+                                    <option value="{{ $tahun }}" {{ $tahun === $currentTahunAjaran ? 'selected' : '' }}>
+                                        {{ $tahun }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
-                    @endif
+                        
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Semester</label>
+                            <select name="semester" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px]">
+                                <option value="">-- Pilih Semester --</option>
+                                <option value="Ganjil" {{ 'Ganjil' === $currentSemester ? 'selected' : '' }}>Ganjil</option>
+                                <option value="Genap" {{ 'Genap' === $currentSemester ? 'selected' : '' }}>Genap</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-end">
+                        <button type="submit" class="w-full sm:w-auto px-6 py-2 text-sm font-semibold whitespace-nowrap min-h-[44px] sm:min-h-auto bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition filter-submit-btn flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4 filter-icon" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V19a1 1 0 01-1.447.894l-4-2A1 1 0 016 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="filter-text">Filter</span>
+                            <svg class="w-4 h-4 filter-spinner hidden animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </button>
+                        
+                        <!-- Show current selection -->
+                        @if($currentTahunAjaran || $currentSemester)
+                            <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-600 overflow-x-auto">
+                                <span class="font-medium whitespace-nowrap">Menampilkan:</span>
+                                @if($currentTahunAjaran)
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded whitespace-nowrap">
+                                        {{ $currentTahunAjaran }}
+                                    </span>
+                                @endif
+                                @if($currentSemester)
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded whitespace-nowrap">
+                                        {{ $currentSemester }}
+                                    </span>
+                                @endif
+                            </div>
+                        @endif
+                    </div>
                 </form>
             </div>
 
             <!-- Consolidated Stats - Only 3 Essential Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6">
                 <!-- Card 1: Belum Dinilai (PRIORITY) -->
-                <div class="bg-white rounded-lg shadow-md border-l-4 border-yellow-500 p-6 hover:shadow-lg transition">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-600 text-sm font-medium">Belum Dinilai</p>
-                            <p class="text-4xl font-bold text-yellow-600 mt-2">{{ $jumlahBelumDinilai }}</p>
+                <div class="bg-white rounded-lg shadow-md border-l-4 border-yellow-500 p-4 sm:p-6 hover:shadow-lg transition">
+                    <div class="flex items-start sm:items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <p class="text-gray-600 text-xs sm:text-sm font-medium">Belum Dinilai</p>
+                            <p class="text-3xl sm:text-4xl font-bold text-yellow-600 mt-2">{{ $jumlahBelumDinilai }}</p>
                             <p class="text-xs text-gray-500 mt-2">siswa perlu rating</p>
                         </div>
-                        <svg class="w-12 h-12 text-yellow-200" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-10 h-10 sm:w-12 sm:h-12 text-yellow-200 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M5 13a3 3 0 100-6H1v6h4zm15-1a3 3 0 01-3 3h-6v-6h6a3 3 0 013 3z"></path>
                         </svg>
                     </div>
@@ -330,27 +338,27 @@
 
                     <div class="overflow-x-auto">
                         <!-- Search Box for Students Table -->
-                        <div class="px-6 py-4 bg-white border-b border-gray-200">
-                            <div class="flex gap-2">
-                                <div class="flex-1 relative">
+                        <div class="px-3 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-200">
+                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                                <div class="flex-1 relative min-w-0">
                                     <input 
                                         type="text" 
                                         id="student-search" 
-                                        placeholder="Cari siswa berdasarkan nama atau NISN..." 
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                        placeholder="Cari siswa..." 
+                                        class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 min-h-[44px] sm:min-h-auto"
                                     >
-                                    <svg class="absolute right-3 top-2.5 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="absolute right-3 top-2.5 sm:top-3 w-5 h-5 text-gray-400 pointer-events-none flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
                                 </div>
                                 <button 
                                     id="clear-search" 
-                                    class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400 transition text-sm"
+                                    class="px-3 sm:px-4 py-2 text-sm font-semibold bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition whitespace-nowrap min-h-[44px] sm:min-h-auto"
                                 >
                                     Bersihkan
                                 </button>
-                                <div class="py-2 px-3 bg-gray-100 rounded-lg text-sm text-gray-600 font-medium whitespace-nowrap">
-                                    Hasil: <span id="search-count">{{ count($siswas) }}</span>
+                                <div class="py-2 px-3 bg-gray-100 rounded-lg text-xs sm:text-sm text-gray-600 font-medium whitespace-nowrap">
+                                    <span class="hidden sm:inline">Hasil: </span><span id="search-count">{{ count($siswas) }}</span>
                                 </div>
                             </div>
                         </div>
