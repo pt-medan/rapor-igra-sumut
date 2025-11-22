@@ -428,6 +428,34 @@
                     </div>
 
                     <div class="overflow-x-auto">
+                        <!-- Export & Stats Summary -->
+                        <div class="px-3 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-200">
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <div class="bg-white rounded-lg p-3 shadow-sm">
+                                    <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Total Siswa</p>
+                                    <p class="text-2xl font-bold text-blue-600 mt-1" id="total-students">{{ count($siswas) }}</p>
+                                </div>
+                                <div class="bg-white rounded-lg p-3 shadow-sm">
+                                    <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Sudah Dinilai</p>
+                                    <p class="text-2xl font-bold text-green-600 mt-1" id="evaluated-count">{{ $penilaians->count() }}</p>
+                                </div>
+                                <div class="bg-white rounded-lg p-3 shadow-sm">
+                                    <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Belum Dinilai</p>
+                                    <p class="text-2xl font-bold text-yellow-600 mt-1" id="pending-count">{{ count($siswas) - $penilaians->count() }}</p>
+                                </div>
+                                <div class="bg-white rounded-lg p-3 shadow-sm">
+                                    <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Tingkat Selesai</p>
+                                    <p class="text-2xl font-bold text-purple-600 mt-1" id="completion-rate">
+                                        @if(count($siswas) > 0)
+                                            {{ round(($penilaians->count() / count($siswas)) * 100) }}%
+                                        @else
+                                            0%
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Search Box for Students Table -->
                         <div class="px-3 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-200">
                             <div class="flex flex-col gap-3">
