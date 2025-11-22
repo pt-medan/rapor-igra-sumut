@@ -318,6 +318,32 @@
                     </div>
 
                     <div class="overflow-x-auto">
+                        <!-- Search Box for Students Table -->
+                        <div class="px-6 py-4 bg-white border-b border-gray-200">
+                            <div class="flex gap-2">
+                                <div class="flex-1 relative">
+                                    <input 
+                                        type="text" 
+                                        id="student-search" 
+                                        placeholder="Cari siswa berdasarkan nama atau NISN..." 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                    >
+                                    <svg class="absolute right-3 top-2.5 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                                <button 
+                                    id="clear-search" 
+                                    class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400 transition text-sm"
+                                >
+                                    Bersihkan
+                                </button>
+                                <div class="py-2 px-3 bg-gray-100 rounded-lg text-sm text-gray-600 font-medium whitespace-nowrap">
+                                    Hasil: <span id="search-count">{{ count($siswas) }}</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <table class="w-full text-sm">
                             <thead class="bg-gray-100 border-b border-gray-200">
                                 <tr>
@@ -330,12 +356,12 @@
                                     <th class="px-6 py-3 text-right font-semibold text-gray-700">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <tbody class="divide-y divide-gray-200" id="students-table-body">
                                 @forelse ($siswas->take(10) as $siswa)
                                     @php
                                         $penilaian = $penilaians->get($siswa->id);
                                     @endphp
-                                    <tr class="hover:bg-gray-50 transition">
+                                    <tr class="hover:bg-gray-50 transition student-row" data-name="{{ strtolower($siswa->nama_lengkap) }}" data-nisn="{{ strtolower($siswa->nisn ?? '') }}">
                                         <td class="px-6 py-4">
                                             @if ($penilaian)
                                                 <input type="checkbox" name="penilaian_ids[]" value="{{ $penilaian->id }}" class="row-checkbox rounded">
@@ -375,7 +401,7 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
+                                    <tr data-empty-state="true">
                                         <td colspan="5" class="px-6 py-12 text-center">
                                             <div class="space-y-4">
                                                 <div>
@@ -431,11 +457,59 @@
             </form>
 
             <script>
+                // Select-all checkbox functionality
                 document.getElementById('select-all')?.addEventListener('change', function(event) {
                     document.querySelectorAll('.row-checkbox').forEach(function(checkbox) {
                         checkbox.checked = event.target.checked;
                     });
                 });
+
+                // Student search/filter functionality
+                const searchInput = document.getElementById('student-search');
+                const clearButton = document.getElementById('clear-search');
+                const studentRows = document.querySelectorAll('.student-row');
+                const searchCountSpan = document.getElementById('search-count');
+
+                function filterStudents() {
+                    const searchTerm = searchInput.value.toLowerCase().trim();
+                    let visibleCount = 0;
+
+                    studentRows.forEach(function(row) {
+                        const name = row.getAttribute('data-name');
+                        const nisn = row.getAttribute('data-nisn');
+
+                        // Show row if search term matches name or NISN (or if no search term)
+                        if (searchTerm === '' || name.includes(searchTerm) || nisn.includes(searchTerm)) {
+                            row.style.display = '';
+                            visibleCount++;
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+
+                    // Update result count
+                    searchCountSpan.textContent = visibleCount;
+
+                    // Show/hide empty state if no results
+                    const emptyState = document.querySelector('[data-empty-state="true"]');
+                    if (emptyState) {
+                        emptyState.style.display = visibleCount === 0 ? '' : 'none';
+                    }
+                }
+
+                // Add event listeners
+                if (searchInput) {
+                    searchInput.addEventListener('keyup', filterStudents);
+                    searchInput.addEventListener('change', filterStudents);
+                }
+
+                if (clearButton) {
+                    clearButton.addEventListener('click', function() {
+                        searchInput.value = '';
+                        filterStudents();
+                        searchInput.focus();
+                    });
+                }
             </script>
 
         </div>
