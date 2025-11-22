@@ -36,8 +36,11 @@
                 <div class="mt-6 pt-6 border-t border-white border-opacity-20">
                     @if($jumlahBelumDinilai > 0)
                     <div class="mb-4 bg-yellow-200 bg-opacity-20 rounded-lg p-3 border border-yellow-300 border-opacity-30">
-                        <p class="text-yellow-100 font-semibold text-sm">
-                            ⚠️ Attention needed: <strong>{{ $jumlahBelumDinilai }}</strong> student{{ $jumlahBelumDinilai > 1 ? 's' : '' }} 
+                        <p class="text-yellow-100 font-semibold text-sm flex items-center gap-2">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                            Attention needed: <strong>{{ $jumlahBelumDinilai }}</strong> student{{ $jumlahBelumDinilai > 1 ? 's' : '' }} 
                             still awaiting rating
                         </p>
                     </div>
@@ -46,17 +49,26 @@
                     <div class="flex flex-col md:flex-row gap-3">
                         @if($jumlahBelumDinilai > 0)
                             <a href="{{ route('guru.rapor.index') }}" 
-                               class="flex-1 px-6 py-3 bg-white text-indigo-600 rounded-lg font-semibold hover:bg-opacity-90 transition text-center">
-                                🎯 Input Rapor ({{ $jumlahBelumDinilai }} siswa)
+                               class="flex-1 px-6 py-3 bg-white text-indigo-600 rounded-lg font-semibold hover:bg-opacity-90 transition text-center flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                Input Rapor ({{ $jumlahBelumDinilai }} siswa)
                             </a>
                         @endif
                         <a href="{{ route('guru.siswa.index') }}" 
-                           class="flex-1 px-6 py-3 bg-white bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition text-center border border-white">
-                            👥 Kelola Siswa
+                           class="flex-1 px-6 py-3 bg-white bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition text-center flex items-center justify-center gap-2 border border-white">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 11a6 6 0 00-5.86 0m.001-.02a.768.768 0 00-.140.54V14a6 6 0 006 6 6 6 0 006-6v-2.46a.768.768 0 00-.14-.54 6 6 0 00-5.86 0z" />
+                            </svg>
+                            Kelola Siswa
                         </a>
                         <a href="{{ route('guru.siswa.create') }}" 
-                           class="flex-1 px-6 py-3 bg-white bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition text-center border border-white">
-                            ➕ Tambah Siswa
+                           class="flex-1 px-6 py-3 bg-white bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition text-center flex items-center justify-center gap-2 border border-white">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                            Tambah Siswa
                         </a>
                     </div>
                 </div>
@@ -67,7 +79,12 @@
             <div class="mb-6 bg-blue-50 rounded-lg shadow p-4 border-l-4 border-blue-500">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-blue-700 font-semibold text-sm mb-1">📊 Kuota Siswa Anda</p>
+                        <p class="text-blue-700 font-semibold text-sm mb-1 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                            </svg>
+                            Kuota Siswa Anda
+                        </p>
                         <div class="flex items-center gap-4">
                             <div>
                                 <p class="text-2xl font-bold text-blue-600">{{ $jumlahSiswa }}/{{ Auth::user()->guru->student_quota }}</p>
@@ -80,7 +97,12 @@
                             </div>
                             @if($jumlahSiswa >= Auth::user()->guru->student_quota)
                                 <div class="text-right">
-                                    <p class="text-red-600 font-semibold text-sm">⚠️ Kuota Penuh</p>
+                                    <p class="text-red-600 font-semibold text-sm flex items-center gap-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                        Kuota Penuh
+                                    </p>
                                     <p class="text-xs text-gray-600">Hubungi admin untuk penambahan</p>
                                 </div>
                             @else
@@ -241,7 +263,12 @@
             @if($recentPenilaians->isNotEmpty())
             <div class="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
                 <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-800">� Aktivitas Terbaru</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                        </svg>
+                        Aktivitas Terbaru
+                    </h3>
                 </div>
                 <div class="divide-y divide-gray-200 max-h-64 overflow-y-auto">
                     @foreach($recentPenilaians->take(5) as $penilaian)
@@ -265,15 +292,26 @@
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center" id="siswa-list">
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-800">📚 Daftar Siswa</h3>
+                            <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10.907A8.002 8.002 0 005.5 14c.846 0 1.659-.135 2.5-.387V4.804zM9 15.977V4.804m0 0a7.967 7.967 0 013.5-.804c1.255 0 2.443.29 3.5.804v10.907A8.002 8.002 0 0014.5 14c-.846 0-1.659.135-2.5.387m0-11.974V4.804" />
+                                </svg>
+                                Daftar Siswa
+                            </h3>
                         </div>
                         <div class="flex gap-2">
                             @if($penilaians->isNotEmpty())
-                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition">
-                                    ⬇️ Download Massal
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                    Download Massal
                                 </button>
-                                <a href="{{ route('guru.export.rapor.kelas', ['kelompok_kelas' => $kelas, 'tahun_ajaran' => $currentTahunAjaran, 'semester' => $currentSemester]) }}" target="_blank" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition">
-                                    🖨️ Cetak Semua
+                                <a href="{{ route('guru.export.rapor.kelas', ['kelompok_kelas' => $kelas, 'tahun_ajaran' => $currentTahunAjaran, 'semester' => $currentSemester]) }}" target="_blank" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M5 4v2h6V4H5zm6 10H5v2h6v-2zm3-6v6a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2h6a2 2 0 012 2v4zm-2 0V4H5v10h6V8z" />
+                                    </svg>
+                                    Cetak Semua
                                 </a>
                             @endif
                         </div>
@@ -307,9 +345,19 @@
                                         <td class="px-6 py-4 text-gray-600 text-sm">{{ $siswa->nisn ?? '-' }}</td>
                                         <td class="px-6 py-4 text-center">
                                             @if ($penilaian)
-                                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">✅ Dinilai</span>
+                                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center justify-center gap-1 mx-auto w-fit">
+                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                                    </svg>
+                                                    Dinilai
+                                                </span>
                                             @else
-                                                <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">⏳ Belum</span>
+                                                <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full flex items-center justify-center gap-1 mx-auto w-fit">
+                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.5a1 1 0 002 0V7zm0 7a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                                    </svg>
+                                                    Belum
+                                                </span>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 text-right">
@@ -336,13 +384,19 @@
                                                 </div>
                                                 <div class="flex justify-center gap-3">
                                                     <a href="{{ route('guru.siswa.create') }}" 
-                                                       class="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition text-sm">
-                                                        ➕ Tambah Siswa Baru
+                                                       class="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition text-sm flex items-center gap-2">
+                                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                        </svg>
+                                                        Tambah Siswa Baru
                                                     </a>
                                                     @if(route('guru.siswa.import'))
                                                         <a href="{{ route('guru.siswa.import') }}" 
-                                                           class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-sm">
-                                                            📤 Import dari File
+                                                           class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-sm flex items-center gap-2">
+                                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                            </svg>
+                                                            Import dari File
                                                         </a>
                                                     @endif
                                                 </div>
