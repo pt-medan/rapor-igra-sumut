@@ -467,23 +467,39 @@
 
             <!-- Recent Activities -->
             @if($recentPenilaians->isNotEmpty())
-            <x-dashboard.card
-                title="Aktivitas Terbaru"
-                icon="<path fill-rule='evenodd' d='M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z' clip-rule='evenodd' />"
-                animated
-                delay="0.2s"
-                class="mb-6"
-            >
-                <div class="max-h-64 overflow-y-auto">
-                    @foreach($recentPenilaians->take(5) as $penilaian)
-                        <x-dashboard.activity-item
-                            :nama="$penilaian->siswa->nama_lengkap"
-                            :tanggal="$penilaian->updated_at->format('d M Y H:i')"
-                            :href="route('guru.penilaian.edit', $penilaian)"
-                        />
-                    @endforeach
+            <div class="mb-6 bg-white rounded-lg shadow-md overflow-hidden animate-fade-in-up" style="animation-delay: 0.2s;">
+                <div class="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center cursor-pointer hover:bg-gray-100 transition" data-collapsible-toggle="recent-activities">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                        </svg>
+                        Aktivitas Terbaru
+                    </h3>
+                    <button 
+                        type="button"
+                        title="Perluas atau tutup bagian aktivitas terbaru"
+                        aria-label="Perluas atau tutup aktivitas terbaru"
+                        aria-expanded="true"
+                        class="p-2 hover:bg-gray-200 rounded transition collapsible-toggle-btn"
+                        data-collapsible-toggle="recent-activities"
+                    >
+                        <svg class="w-5 h-5 transition-transform collapsible-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                    </button>
                 </div>
-            </x-dashboard.card>
+                <div class="collapsible-content max-h-64 overflow-y-auto" data-collapsible-target="recent-activities">
+                    <div class="divide-y divide-gray-200">
+                        @foreach($recentPenilaians->take(5) as $penilaian)
+                            <x-dashboard.activity-item
+                                :nama="$penilaian->siswa->nama_lengkap"
+                                :tanggal="$penilaian->updated_at->format('d M Y H:i')"
+                                :href="route('guru.penilaian.edit', $penilaian)"
+                            />
+                        @endforeach
+                    </div>
+                </div>
+            </div>
             @endif
 
             <!-- Students List (Simplified) -->
@@ -944,6 +960,54 @@
                     originalFilterStudents();
                     updateDetailRows();
                 };
+
+                // Collapsible sections functionality
+                const collapsibleToggles = document.querySelectorAll('[data-collapsible-toggle]');
+                collapsibleToggles.forEach(function(toggle) {
+                    toggle.addEventListener('click', function() {
+                        const targetId = this.getAttribute('data-collapsible-toggle');
+                        const content = document.querySelector(`[data-collapsible-target="${targetId}"]`);
+                        const buttons = document.querySelectorAll(`[data-collapsible-toggle="${targetId}"]`);
+                        const icon = this.querySelector('.collapsible-icon');
+                        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+                        if (isExpanded) {
+                            // Collapse
+                            content.style.maxHeight = '0';
+                            content.style.overflow = 'hidden';
+                            content.classList.add('opacity-0');
+                            buttons.forEach(btn => {
+                                btn.setAttribute('aria-expanded', 'false');
+                                const btnIcon = btn.querySelector('.collapsible-icon');
+                                if (btnIcon) btnIcon.style.transform = 'rotate(0deg)';
+                            });
+                        } else {
+                            // Expand
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                            content.classList.remove('opacity-0');
+                            buttons.forEach(btn => {
+                                btn.setAttribute('aria-expanded', 'true');
+                                const btnIcon = btn.querySelector('.collapsible-icon');
+                                if (btnIcon) btnIcon.style.transform = 'rotate(180deg)';
+                            });
+                        }
+                    });
+                });
+
+                // Add CSS transition for smooth collapsing
+                const style = document.createElement('style');
+                style.textContent = `
+                    [data-collapsible-target] {
+                        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+                    }
+                    [data-collapsible-target].opacity-0 {
+                        opacity: 0;
+                    }
+                    .collapsible-icon {
+                        transition: transform 0.3s ease-in-out;
+                    }
+                `;
+                document.head.appendChild(style);
             </script>
 
         </div>
