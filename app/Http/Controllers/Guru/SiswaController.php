@@ -182,6 +182,11 @@ class SiswaController extends Controller
         $siswa->sekolah_id = $kelompokKelas->sekolah_id;
         $siswa->save();
 
+        // Increment student count in guru's profile
+        if ($guru) {
+            $guru->increment('student_count');
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Siswa berhasil ditambahkan.',
@@ -244,9 +249,9 @@ class SiswaController extends Controller
     {
         $this->authorizeSiswa($siswa);
 
-        // Decrement student count from guru's quota
+        // Decrement student count from guru's quota (with safety check)
         $user = Auth::user();
-        if ($user->guru) {
+        if ($user->guru && $user->guru->student_count > 0) {
             $user->guru->decrement('student_count');
         }
 
