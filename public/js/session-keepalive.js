@@ -12,8 +12,13 @@
     'use strict';
 
     const SessionKeepalive = {
-        // Configuration
-        heartbeatInterval: 30 * 60 * 1000,  // 30 minutes in milliseconds
+        // Configuration - Shorter interval in development to prevent 419 errors
+        // Development: 5 minutes (aggressive to prevent timeout during testing)
+        // Production: 30 minutes (conservative to reduce server load)
+        heartbeatInterval: window.location.hostname === 'localhost' || 
+                          window.location.hostname === '127.0.0.1' ? 
+                          (5 * 60 * 1000) :   // 5 minutes in development
+                          (30 * 60 * 1000),   // 30 minutes in production
         heartbeatUrl: '/api/heartbeat',
         lastActivity: Date.now(),
         isActive: true,
@@ -77,11 +82,25 @@
                 })
                 .then(response => {
                     if (response.ok) {
-                        console.log('[SessionKeepalive] Heartbeat sent successfully');
                         return response.json();
                     } else if (response.status === 401) {
                         console.warn('[SessionKeepalive] Unauthorized - user session may have expired');
                         this.handleSessionExpired();
+                    } else if (response.status === 419) {
+                        console.warn('[SessionKeepalive] CSRF token mismatch (419)');
+                        this.handleTokenMismatch();
+                    }
+                    return null;
+                })
+                .then(data => {
+                    if (data && data.status === 'ok') {
+                        console.log('[SessionKeepalive] Heartbeat sent successfully');
+                        
+                        // Update CSRF token if provided in response
+                        if (data.csrf_token && window.CSRFManager) {
+                            window.CSRFManager.updateToken(data.csrf_token);
+                            console.log('[SessionKeepalive] CSRF token updated from server');
+                        }
                     }
                 })
                 .catch(error => {
@@ -127,6 +146,18 @@
             }
             // Optionally redirect to login
             // window.location.href = '/login';
+        },
+        
+        // Handle CSRF token mismatch (419 error)
+        handleTokenMismatch: function() {
+            console.warn('[SessionKeepalive] CSRF Token Mismatch - attempting recovery');
+            
+            // Try to refresh page to get new token
+            if (window.CSRFManager) {
+                // Reload to get fresh CSRF token
+                console.log('[SessionKeepalive] Reloading page to refresh CSRF token');
+                window.location.reload();
+            }
         }
     };
     

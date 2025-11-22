@@ -39,7 +39,10 @@
             </main>
         </div>
 
-        <!-- Session Keepalive Script -->
+        <!-- CSRF Manager Script (must load first) -->
+        <script src="{{ asset('js/csrf-manager.js') }}"></script>
+        
+        <!-- Session Keepalive Script (depends on CSRF Manager) -->
         <script src="{{ asset('js/session-keepalive.js') }}"></script>
     </body>
 </html>
