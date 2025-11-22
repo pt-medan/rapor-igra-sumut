@@ -32,7 +32,7 @@ DATE=$(date +"%Y%m%d_%H%M%S")
 DB_HOST="localhost"
 DB_PORT="3306"
 DB_NAME="igrasumu_rapor"
-DB_USER="igrasumi_sefri"
+DB_USER="igrasumu_sefri"
 DB_PASS="S3frifadhlan"
 mkdir -p "$BACKUP_DIR"
 echo "=========================================="

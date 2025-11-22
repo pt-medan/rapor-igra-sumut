@@ -41,16 +41,6 @@ class PenilaianPolicy
             $userKelasId = (int) (optional($user->guru?->kelompokKelas)->id ?? 0);
             $siswaKelasId = (int) (optional($penilaian->siswa)->kelompok_kelas_id ?? 0);
 
-            // Debug info
-            if (!$userKelasId || !$siswaKelasId) {
-                \Log::warning('PenilaianPolicy::view - Missing kelas IDs', [
-                    'user_id' => $user->id,
-                    'user_kelas_id' => $userKelasId,
-                    'penilaian_id' => $penilaian->id,
-                    'siswa_kelas_id' => $siswaKelasId,
-                ]);
-            }
-
             return $userKelasId === $siswaKelasId && $userKelasId > 0;
         }
 
@@ -73,16 +63,6 @@ class PenilaianPolicy
             $userKelasId = (int) (optional($user->guru?->kelompokKelas)->id ?? 0);
             $siswaKelasId = (int) ($siswa->kelompok_kelas_id ?? 0);
 
-            // Debug info (dapat dihapus setelah testing)
-            if (!$userKelasId || !$siswaKelasId) {
-                \Log::warning('PenilaianPolicy::create - Missing kelas IDs', [
-                    'user_id' => $user->id,
-                    'user_kelas_id' => $userKelasId,
-                    'siswa_id' => $siswa->id,
-                    'siswa_kelas_id' => $siswaKelasId,
-                ]);
-            }
-
             return $userKelasId === $siswaKelasId && $userKelasId > 0;
         }
 
@@ -104,16 +84,6 @@ class PenilaianPolicy
             $userKelasId = (int) (optional($user->guru?->kelompokKelas)->id ?? 0);
             $siswaKelasId = (int) (optional($penilaian->siswa)->kelompok_kelas_id ?? 0);
 
-            // Debug info
-            if (!$userKelasId || !$siswaKelasId) {
-                \Log::warning('PenilaianPolicy::update - Missing kelas IDs', [
-                    'user_id' => $user->id,
-                    'user_kelas_id' => $userKelasId,
-                    'penilaian_id' => $penilaian->id,
-                    'siswa_kelas_id' => $siswaKelasId,
-                ]);
-            }
-
             return $userKelasId === $siswaKelasId && $userKelasId > 0;
         }
 
@@ -134,16 +104,6 @@ class PenilaianPolicy
             // FIXED: Access kelas_id through relationship, cast to int to handle type mismatch
             $userKelasId = (int) (optional($user->guru?->kelompokKelas)->id ?? 0);
             $siswaKelasId = (int) (optional($penilaian->siswa)->kelompok_kelas_id ?? 0);
-
-            // Debug info
-            if (!$userKelasId || !$siswaKelasId) {
-                \Log::warning('PenilaianPolicy::delete - Missing kelas IDs', [
-                    'user_id' => $user->id,
-                    'user_kelas_id' => $userKelasId,
-                    'penilaian_id' => $penilaian->id,
-                    'siswa_kelas_id' => $siswaKelasId,
-                ]);
-            }
 
             return $userKelasId === $siswaKelasId && $userKelasId > 0;
         }

@@ -38,30 +38,40 @@ class PenilaianController extends Controller
 
         $this->authorize('create', [Penilaian::class, $siswa]);
 
-        // Standardize semester input
+        // Standardize semester input: convert text to numeric
         $request->merge([
-            'semester' => match ($request->input('semester')) {
-                '1' => 'Ganjil',
-                '2' => 'Genap',
+            'semester' => match (strtolower($request->input('semester'))) {
+                'ganjil' => '1',
+                'genap' => '2',
                 default => $request->input('semester'),
             }
         ]);
 
         $validated = $request->validate([
             'tahun_ajaran' => 'required|string|max:20',
-            'semester' => 'required|in:1,2,Ganjil,Genap',
-            'agama_budi_pekerti' => 'required|string',
-            'jati_diri' => 'required|string',
-            'literasi_sains' => 'required|string',
-            'sakit' => 'nullable|integer|min:0',
-            'izin' => 'nullable|integer|min:0',
-            'tanpa_keterangan' => 'nullable|integer|min:0',
-            'catatan_kesehatan' => 'nullable|string',
-            'catatan_guru' => 'nullable|string',
-            'ekstrakurikuler' => 'nullable|array',
-            'ekstrakurikuler.*.nama' => 'required_with:ekstrakurikuler|string|max:255',
-            'ekstrakurikuler.*.predikat' => 'required_with:ekstrakurikuler|string|max:255',
+            'semester' => 'required|in:1,2',
+            'agama_budi_pekerti' => 'required|string|min:1',
+            'jati_diri' => 'required|string|min:1',
+            'literasi_sains' => 'required|string|min:1',
+            'sakit' => 'nullable|integer|min:0|max:365',
+            'izin' => 'nullable|integer|min:0|max:365',
+            'tanpa_keterangan' => 'nullable|integer|min:0|max:365',
+            'catatan_kesehatan' => 'nullable|string|max:1000',
+            'catatan_guru' => 'nullable|string|max:1000',
+            'ekstrakurikuler' => 'nullable|array|max:10',
+            'ekstrakurikuler.*.nama' => 'required_with:ekstrakurikuler|string|max:255|regex:/^[\pL\pN\s\-().]*$/u',
+            'ekstrakurikuler.*.predikat' => 'required_with:ekstrakurikuler|string|max:255|regex:/^[\pL\pN\s\-().]*$/u',
         ]);
+
+        // Check if penilaian already exists for this student, year, and semester
+        $existingPenilaian = Penilaian::where('siswa_id', $siswa->id)
+            ->where('tahun_ajaran', $validated['tahun_ajaran'])
+            ->where('semester', $validated['semester'])
+            ->exists();
+
+        if ($existingPenilaian) {
+            return redirect()->back()->with('error', 'Rapor untuk tahun ajaran dan semester ini sudah ada. Silakan edit rapor yang sudah ada atau hapus terlebih dahulu.');
+        }
 
         // Filter out any null entries from the dynamic fields
         if (isset($validated['ekstrakurikuler'])) {

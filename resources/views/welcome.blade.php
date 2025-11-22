@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $settings->get('app_name')?->value ?? 'E-Rapor IGRA' }} - Sistem Rapor Digital Raudhatul Athfal</title>
+    <title>{{ $settings->get('app_name')?->value ?? 'E-Rapor IGRA' }} - Rapor Digital Raudhatul Athfal</title>
     @if ($settings->get('app_favicon')?->value)
         <link rel="icon" href="{{ asset('storage/' . $settings->get('app_favicon')->value) }}" type="image/png">
     @else

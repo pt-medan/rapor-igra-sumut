@@ -392,7 +392,7 @@ mysql -u igrasumu_sefri -pS3frifadhlan -e "SELECT VERSION();"
 mysql -u igrasumu_sefri -pS3frifadhlan -e "SHOW DATABASES;"
 
 # Test backup manually
-mysqldump -u igrasumi_sefri -pS3frifadhlan igrasumu_rapor > /tmp/test_backup.sql
+mysqldump -u igrasumu_sefri -pS3frifadhlan igrasumu_rapor > /tmp/test_backup.sql
 
 # Check error log
 tail -50 /home/igrasumu/public_html/storage/logs/laravel.log
